@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Live Display – {{ $settings['agentName'] }}</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Live Coway">
+<meta name="theme-color" content="#0D3446">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EAF3F6; --surface:#FFFFFF; --ink:#0D3446; --muted:#557483;
+  --water:#2BA7C9; --mint:#D3EFE6; --accent:#FF4F64; --accent-ink:#FFFFFF;
+  --line:#CFE0E6; --pedestal:#DCEEF4;
+  --display:"Bricolage Grotesque", "Arial Narrow", system-ui, sans-serif;
+  --body:"Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#071D27; --surface:#0D2B38; --ink:#E8F4F8; --muted:#8FB0BE;
+    --water:#4CC3E3; --mint:#123F3B; --accent:#FF6B7D; --line:#1D4252; --pedestal:#0F3545;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#071D27; --surface:#0D2B38; --ink:#E8F4F8; --muted:#8FB0BE;
+  --water:#4CC3E3; --mint:#123F3B; --accent:#FF6B7D; --line:#1D4252; --pedestal:#0F3545;
+}
+*,*::before,*::after{box-sizing:inherit}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.45;
+  display:flex;flex-direction:column;overflow-x:hidden;overflow-y:auto;-webkit-text-size-adjust:100%}
+.top,.cats,.foot{flex-shrink:0}
+button,.plans tr{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--water);outline-offset:2px}
+
+/* Top bar */
+.top{display:flex;align-items:center;gap:16px;padding:14px 24px;border-bottom:1px solid var(--line);background:var(--surface)}
+.agent{display:flex;flex-direction:column;line-height:1.15}
+.agent b{font-family:var(--display);font-size:1.35rem;font-weight:800;letter-spacing:-.01em}
+.agent span{color:var(--muted);font-size:.9rem}
+.live{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:var(--accent-ink);
+  font-weight:700;padding:6px 12px;border-radius:999px;font-size:.9rem}
+.live::before{content:"";width:9px;height:9px;border-radius:50%;background:currentColor;animation:blink 1.2s infinite}
+@keyframes blink{50%{opacity:.25}}
+.spacer{flex:1}
+.timer{display:flex;align-items:baseline;gap:10px;padding:6px 14px;border:2px solid var(--accent);border-radius:12px;background:transparent;min-height:44px}
+.tools{display:flex;gap:6px}
+.icon{width:44px;height:44px;border-radius:12px;border:1.5px solid var(--line);background:transparent;display:grid;place-items:center;padding:0}
+.icon svg{width:20px;height:20px}
+.soldbtn{background:var(--accent);color:var(--accent-ink);border:0;border-radius:12px;padding:0 16px;min-height:44px;font-weight:700;white-space:nowrap}
+.soldbtn:active{transform:scale(.96)}
+.timer span{font-size:.85rem;color:var(--muted)}
+.timer b{font-family:var(--display);font-size:1.6rem;font-variant-numeric:tabular-nums;color:var(--accent)}
+.sold{display:flex;align-items:baseline;gap:8px}
+.sold{background:transparent;border:0;padding:0;min-height:44px;align-items:center}
+.sold b{font-family:var(--display);font-size:1.6rem;font-variant-numeric:tabular-nums}
+.sold.low b{color:var(--accent)}
+.soldbtn:disabled{opacity:.45;cursor:not-allowed}
+.sold span{color:var(--muted);font-size:.85rem}
+
+/* Category tabs */
+.cats{display:flex;gap:8px;padding:12px 24px;overflow-x:auto;scrollbar-width:none}
+.cat{border:1.5px solid var(--line);background:var(--surface);padding:10px 18px;border-radius:999px;
+  font-weight:600;white-space:nowrap;display:flex;gap:8px;align-items:center}
+.cat small{color:var(--muted);font-weight:500}
+.cat[aria-selected="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.cat[aria-selected="true"] small{color:inherit;opacity:.7}
+
+/* Stage */
+.stage{flex:1 0 auto;display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:20px;padding:4px 24px 16px}
+.spot{position:relative;display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:28px;
+  background:var(--surface);border-radius:28px;padding:28px;min-height:0;overflow:hidden}
+.pedestal{background:var(--pedestal);border-radius:20px;display:grid;place-items:center;position:relative;min-height:240px;overflow:hidden}
+#hero{position:absolute;inset:10% 14% 12%;display:grid;grid-template:100% / 100%;place-items:center}
+#hero > div{display:contents}
+.pedestal svg,.pedestal img{width:100%;height:100%;object-fit:contain}
+.pedestal::after{content:"";position:absolute;left:12%;right:12%;bottom:7%;height:14px;border-radius:50%;
+  background:var(--ink);opacity:.08}
+.badge{position:absolute;top:16px;left:16px;background:var(--mint);color:var(--ink);font-weight:700;
+  padding:6px 12px;border-radius:10px;font-size:.9rem;z-index:1}
+.info{display:flex;flex-direction:column;min-height:0}
+.info .catname{color:var(--water);font-weight:700}
+.info h1{font-family:var(--display);font-weight:800;font-size:clamp(1.8rem,3.4vw,3.2rem);line-height:1.02;
+  letter-spacing:-.02em;margin:6px 0 18px}
+.price{display:flex;align-items:flex-end;gap:10px;line-height:.85}
+.price .rm{font-family:var(--display);font-weight:700;font-size:clamp(1.6rem,2.4vw,2.4rem);padding-bottom:.35em}
+.price .num{font-family:var(--display);font-weight:800;font-size:clamp(4.5rem,8.5vw,8rem);letter-spacing:-.05em;color:var(--ink)}
+.price .per{font-size:1.1rem;color:var(--muted);padding-bottom:.5em}
+.per b{color:var(--ink);font-weight:700}
+.plans{width:100%;border-collapse:separate;border-spacing:0 5px;margin:14px 0 16px}
+.plans tr{cursor:pointer}
+.plans td{padding:8px 14px;background:var(--bg);vertical-align:middle}
+.plans td:first-child{border-radius:10px 0 0 10px;font-weight:700;white-space:nowrap}
+.plans td:last-child{border-radius:0 10px 10px 0;color:var(--muted);font-size:.92rem}
+.plans .amt{font-family:var(--display);font-weight:700;font-size:1.25rem;white-space:nowrap}
+.plans tr[aria-selected="true"] td{background:var(--ink);color:var(--bg)}
+.plans tr[aria-selected="true"] td:last-child{color:var(--bg);opacity:.85}
+.info h1:has(+ .lead:not([hidden])){margin-bottom:4px}
+.lead{margin:0 0 14px;font-size:1.2rem;color:var(--muted);font-weight:500}
+.fit{margin:0 0 12px;background:var(--mint);border-radius:14px;padding:10px 14px;display:flex;flex-direction:column;gap:2px}
+.fit span{font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--water)}
+.fit b{font-size:1.1rem;font-weight:600}
+.pedestal.photo{background:#DCEEF4}
+.pedestal.photo::after{background:#0D3446}
+.pedestal.photo #hero{inset:9% 18% 11%}
+.item .thumb.photo{background:#DCEEF4}
+.feats{list-style:none;margin:0 0 auto;padding:0;display:grid;gap:8px}
+.feats li{display:flex;gap:10px;align-items:flex-start;font-size:1.05rem}
+.feats li::before{content:"";flex:none;width:10px;height:10px;margin-top:.45em;border-radius:50%;background:var(--water)}
+.promo{margin-top:18px;background:var(--accent);color:var(--accent-ink);border-radius:16px;padding:14px 18px;
+  font-weight:700;font-size:1.15rem;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.promo small{font-weight:500;opacity:.9;font-size:.9rem}
+.nav{position:absolute;right:28px;top:28px;display:flex;gap:8px;align-items:center;color:var(--muted);font-size:.9rem}
+.nav button{width:44px;height:44px;border-radius:50%;border:1.5px solid var(--line);background:transparent;font-size:1.1rem}
+
+/* Stamp */
+.stamp{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;opacity:0}
+.stamp span{font-family:var(--display);font-weight:800;font-size:clamp(3rem,8vw,7rem);color:var(--accent);
+  border:8px solid var(--accent);border-radius:20px;padding:4px 28px;transform:rotate(-8deg);background:var(--surface)}
+.stamp.show{animation:stamp 1.6s ease-out}
+@keyframes stamp{0%{opacity:0;transform:scale(1.6)}15%{opacity:1;transform:scale(1)}75%{opacity:1}100%{opacity:0}}
+
+/* Queue */
+.queue{background:var(--surface);border-radius:28px;padding:18px;display:flex;flex-direction:column;min-height:0}
+.queue h2{font-family:var(--display);font-size:1.15rem;margin:4px 6px 12px;font-weight:700}
+.list{list-style:none;margin:0;padding:0;overflow-y:auto;display:grid;gap:6px}
+.item{display:grid;grid-template-columns:52px 1fr auto;gap:12px;align-items:center;width:100%;text-align:left;
+  background:transparent;border:1.5px solid transparent;border-radius:14px;padding:8px}
+.item .thumb{position:relative;width:52px;height:52px;border-radius:12px;background:var(--pedestal);display:grid;place-items:center}
+.item .thumb svg,.item .thumb img{width:70%;height:80%;object-fit:contain;min-height:0}
+.item b{display:block;font-weight:600;line-height:1.2}
+.item small{color:var(--muted)}
+.bn{position:absolute;top:-6px;left:-6px;min-width:22px;height:22px;padding:0 6px;border-radius:11px;
+  background:var(--water);color:#06222D;font-style:normal;font-weight:700;font-size:.75rem;display:grid;place-items:center}
+.cta svg{width:26px;height:26px;flex:none}
+.item .p{font-family:var(--display);font-weight:700}
+.item[aria-current="true"]{border-color:var(--ink);background:var(--bg)}
+
+/* Footer */
+.foot{display:flex;align-items:stretch;background:var(--ink);color:var(--bg);min-height:56px}
+.cta{flex:none;display:flex;align-items:center;gap:10px;padding:0 24px;background:var(--water);color:#06222D;font-weight:700;font-size:1.05rem}
+.ticker{flex:1;overflow:hidden;display:flex;align-items:center}
+.track{display:flex;gap:56px;white-space:nowrap;padding-left:40px;animation:scroll 40s linear infinite;font-weight:500}
+@keyframes scroll{to{transform:translateX(-50%)}}
+
+/* Help */
+.help{position:fixed;inset:0;background:rgba(4,20,28,.6);display:none;place-items:center;z-index:20;padding:20px}
+.help.open{display:grid}
+.help div{background:var(--surface);border-radius:20px;padding:24px 28px;max-width:420px;width:100%}
+.help h3{font-family:var(--display);margin:0 0 12px}
+.help dl{display:grid;grid-template-columns:auto 1fr;gap:8px 16px;margin:0}
+.help dt kbd{font-family:var(--body);font-weight:700;border:1.5px solid var(--line);border-radius:6px;padding:1px 8px}
+.help dd{margin:0;color:var(--muted)}
+.hint{position:fixed;right:16px;bottom:72px;font-size:.8rem;color:var(--muted);background:var(--surface);
+  border:1px solid var(--line);padding:4px 10px;border-radius:8px}
+
+@media (min-width:1001px){ .queue{max-height:calc(100dvh - 210px)} }
+/* Laptop kecil & iPad landskap */
+@media (max-width:1280px){
+  .stage{grid-template-columns:minmax(0,1fr) 290px}
+  .spot{grid-template-columns:minmax(0,.75fr) minmax(0,1.25fr);gap:22px;padding:22px}
+  .plans tr{display:grid;grid-template-columns:auto 1fr}
+  .plans td{border-radius:0!important}
+  .plans td:first-child{border-radius:10px 0 0 0!important}
+  .plans td.amt{text-align:right;border-radius:0 10px 0 0!important}
+  .plans td:last-child{grid-column:1/-1;border-radius:0 0 10px 10px!important;padding-top:0}
+  .nav{top:22px;right:22px}
+  .info h1{padding-right:140px}
+}
+@media (min-width:1001px) and (max-height:940px){
+  .price .num{font-size:clamp(3.5rem,11vh,6rem)}
+  .info h1{font-size:clamp(1.6rem,3vw,2.4rem);margin-bottom:10px}
+  .feats li{font-size:.95rem}
+}
+@media (min-width:1001px) and (max-height:800px){
+  .feats{display:none}
+  .plans td{padding:6px 12px}
+  .cats{padding-top:8px;padding-bottom:8px}
+  .top{padding-top:10px;padding-bottom:10px}
+  .promo{margin-top:auto;padding:10px 16px;font-size:1.05rem}
+  .promo small{white-space:nowrap}
+  .lead{font-size:1.02rem;margin-bottom:8px}
+  .fit{padding:6px 12px;margin-bottom:8px}
+  .fit b{font-size:1rem}
+  .plans{margin:8px 0 10px}
+  .plans td:last-child{font-size:.82rem}
+  .info h1{font-size:2.1rem}
+}
+@media (min-width:1001px) and (max-height:740px){
+  .lead{display:none}
+  .price .num{font-size:4.2rem}
+  .catname{font-size:.9rem}
+  .stage{padding-bottom:10px}
+  .plans td{padding:4px 12px}
+  .info h1{font-size:1.9rem}
+}
+/* iPad potret & phone landskap */
+@media (max-width:1000px){
+  .stage{grid-template-columns:minmax(0,1fr);gap:14px}
+  .queue,.spot{min-width:0}
+  .queue{padding:14px 0 14px 14px}
+  .queue h2{margin-right:14px}
+  .list{grid-auto-flow:column;grid-auto-columns:minmax(260px,46%);overflow-x:auto;overflow-y:hidden;
+    scroll-snap-type:x mandatory;padding-right:14px;scrollbar-width:none}
+  .list li{scroll-snap-align:start}
+  .item{border-color:var(--line)}
+  .top{flex-wrap:wrap;row-gap:10px}
+  .agent b,.agent span{white-space:nowrap}
+  .agent span{display:none}
+  .sold span{max-width:70px;line-height:1.15}
+  .top{gap:10px;padding-left:16px;padding-right:16px}
+  .foot{position:sticky;bottom:0;z-index:5}
+  .hint{display:none}
+  .info h1{padding-right:150px}
+}
+/* iPad potret: header dua baris yang kemas */
+@media (max-width:900px){
+  .top{display:flex;flex-wrap:wrap;align-items:center}
+  .agent{order:1;flex:1;min-width:0}.live{order:2}.tools{order:3}
+  .spacer{display:block!important;order:4;flex-basis:100%;height:0}
+  .sold{order:5;flex:1;min-width:0}.timer{order:6}.soldbtn{order:7}
+  .sold span{max-width:none}
+}
+/* Phone */
+@media (max-width:640px){
+  .top{display:flex;flex-wrap:wrap;gap:10px;padding:10px 14px;align-items:center}
+  .agent{order:1;flex:1;min-width:0}.live{order:2}.tools{order:3}
+  .spacer{display:block!important;order:4;flex-basis:100%;height:0}
+  .sold{order:5;flex:1;min-width:0}.timer{order:6}.soldbtn{order:7}
+  .sold span{max-width:70px;line-height:1.15}
+  .agent span{display:none}
+  .agent b{font-size:1.1rem}
+  .sold b,.timer b{font-size:1.2rem}
+  .sold span,.timer span{font-size:.75rem}
+  .timer{padding:4px 10px}
+  .soldbtn{padding:0 12px}
+  .cats{padding:10px 14px}
+  .stage{padding:2px 14px 14px}
+  .spot{grid-template-columns:1fr;padding:16px;gap:14px;border-radius:22px}
+  .pedestal{min-height:180px;height:32vh;max-height:260px}
+  .nav{position:static;order:-1;justify-content:space-between}
+  .info h1{padding-right:0;margin:4px 0 12px}
+  .price .num{font-size:clamp(4rem,22vw,6rem)}
+  .feats li{font-size:1rem}
+  .promo{flex-direction:column;align-items:flex-start;gap:2px}
+  .queue{border-radius:22px}
+  .list{grid-auto-columns:80%}
+  .cta{padding:0 14px;font-size:.9rem}
+}
+@media (hover:none){ .hint{display:none} }
+@media (prefers-reduced-motion: reduce){
+  .track,.live::before{animation:none}
+  .stamp.show{animation-duration:.01s}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="agent"><b id="agentName"></b><span id="agentRole"></span></div>
+  <span class="live">LIVE</span>
+  <div class="spacer"></div>
+  <button class="sold" id="slotBox" aria-label="Ubah bilangan slot promo" title="Tekan untuk ubah bilangan slot"><b id="slotCount">20</b><span id="slotLbl">slot promo tinggal</span></button>
+  <button class="soldbtn" id="soldBtn">−1 slot</button>
+  <button class="timer" id="timerBtn" aria-label="Mula semula timer promo" title="Tekan untuk mula semula"><span>Promo tamat</span><b id="timer">15:00</b></button>
+  <div class="tools">
+    <button class="icon" id="themeBtn" aria-label="Tukar mod gelap atau cerah"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg></button>
+    <button class="icon" id="fsBtn" aria-label="Skrin penuh"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
+  </div>
+</header>
+
+<nav class="cats" id="cats" role="tablist" aria-label="Kategori produk"></nav>
+
+<main class="stage">
+  <section class="spot" aria-live="polite">
+    <div class="pedestal"><span class="badge" id="badge"></span><div id="hero"></div></div>
+    <div class="info">
+      <span class="catname" id="catName"></span>
+      <h1 id="pName"></h1>
+      <p class="lead" id="pLead"></p>
+      <div class="price"><span class="rm">RM</span><span class="num" id="pRent"></span><span class="per">sebulan<br><b id="planLbl"></b></span></div>
+      <table class="plans"><tbody id="plans"></tbody></table>
+      <p class="fit" id="pFit"><span>Sesuai untuk</span><b id="pFitTxt"></b></p>
+      <ul class="feats" id="pFeats"></ul>
+      <div class="promo"><span id="pPromo"></span><small id="begNo"></small></div>
+    </div>
+    <div class="nav"><span id="pos"></span>
+      <button id="prev" aria-label="Produk sebelum">‹</button>
+      <button id="next" aria-label="Produk seterusnya">›</button>
+    </div>
+    <div class="stamp" id="stamp"><span>DITEMPAH!</span></div>
+  </section>
+
+  <aside class="queue">
+    <h2 id="queueTitle"></h2>
+    <ul class="list" id="list"></ul>
+  </aside>
+</main>
+
+<footer class="foot">
+  <div class="cta" id="cta"></div>
+  <div class="ticker"><div class="track" id="track"></div></div>
+</footer>
+
+<div class="hint">Tekan H untuk shortcut</div>
+<div class="help" id="help" role="dialog" aria-label="Shortcut papan kekunci">
+  <div>
+    <h3>Shortcut masa live</h3>
+    <dl>
+      <dt><kbd>←</kbd> <kbd>→</kbd></dt><dd>Tukar produk</dd>
+      <dt><kbd>↑</kbd> <kbd>↓</kbd> / <kbd>1</kbd>–<kbd>9</kbd></dt><dd>Tukar kategori</dd>
+      <dt><kbd>P</kbd></dt><dd>Tukar pelan (7 / 8 / 3+2 tahun)</dd>
+      <dt><kbd>S</kbd></dt><dd>Tolak 1 slot promo dan tunjuk cop “Ditempah!”</dd>
+      <dt><kbd>R</kbd></dt><dd>Ubah bilangan slot (betulkan salah tekan)</dd>
+      <dt><kbd>T</kbd></dt><dd>Mula semula timer promo</dd>
+      <dt><kbd>F</kbd></dt><dd>Skrin penuh</dd>
+      <dt><kbd>D</kbd></dt><dd>Tukar mod gelap / cerah</dd>
+      <dt><kbd>H</kbd> / <kbd>Esc</kbd></dt><dd>Tutup panduan ini</dd>
+    </dl>
+  </div>
+</div>
+
+<script>
+const SETTINGS = @json($settings);
+const CATEGORIES = @json($categories);
+</script>
+@verbatim
+<script>
+
+const ART = {
+  water:`<svg viewBox="0 0 120 180" aria-hidden="true"><rect x="22" y="10" width="76" height="160" rx="12" fill="currentColor" opacity=".92"/>
+    <rect x="34" y="28" width="52" height="34" rx="6" fill="var(--pedestal)"/><circle cx="48" cy="45" r="5" fill="var(--water)"/><circle cx="72" cy="45" r="5" fill="var(--accent)"/>
+    <rect x="44" y="80" width="32" height="10" rx="3" fill="var(--pedestal)"/><rect x="56" y="90" width="8" height="14" fill="var(--pedestal)"/>
+    <path d="M60 112c-6 9-8 13-8 17a8 8 0 0 0 16 0c0-4-2-8-8-17z" fill="var(--water)"/><rect x="34" y="146" width="52" height="8" rx="4" fill="var(--pedestal)"/></svg>`,
+  air:`<svg viewBox="0 0 120 180" aria-hidden="true"><rect x="26" y="10" width="68" height="160" rx="30" fill="currentColor" opacity=".92"/>
+    <circle cx="60" cy="48" r="20" fill="var(--pedestal)"/><circle cx="60" cy="48" r="8" fill="var(--water)"/>
+    <g fill="var(--pedestal)"><rect x="40" y="90" width="40" height="4" rx="2"/><rect x="40" y="102" width="40" height="4" rx="2"/><rect x="40" y="114" width="40" height="4" rx="2"/><rect x="40" y="126" width="40" height="4" rx="2"/><rect x="40" y="138" width="40" height="4" rx="2"/></g></svg>`,
+  mattress:`<svg viewBox="0 0 180 120" aria-hidden="true"><rect x="10" y="38" width="160" height="50" rx="14" fill="currentColor" opacity=".92"/>
+    <rect x="10" y="38" width="160" height="14" rx="7" fill="var(--water)"/><rect x="22" y="22" width="48" height="20" rx="10" fill="var(--pedestal)" stroke="currentColor" stroke-width="3"/>
+    <g fill="var(--pedestal)"><circle cx="40" cy="70" r="3"/><circle cx="70" cy="70" r="3"/><circle cx="100" cy="70" r="3"/><circle cx="130" cy="70" r="3"/><circle cx="160" cy="70" r="3"/></g>
+    <rect x="22" y="88" width="10" height="14" fill="currentColor"/><rect x="148" y="88" width="10" height="14" fill="currentColor"/></svg>`,
+  bidet:`<svg viewBox="0 0 140 160" aria-hidden="true"><path d="M20 30h100v20c0 40-20 70-50 70S20 90 20 50z" fill="currentColor" opacity=".92"/>
+    <ellipse cx="70" cy="56" rx="34" ry="22" fill="var(--pedestal)"/><rect x="104" y="40" width="26" height="40" rx="8" fill="currentColor"/>
+    <circle cx="117" cy="52" r="4" fill="var(--water)"/><circle cx="117" cy="66" r="4" fill="var(--accent)"/><rect x="52" y="118" width="36" height="30" rx="6" fill="currentColor" opacity=".8"/></svg>`,
+  shower:`<svg viewBox="0 0 140 170" aria-hidden="true"><path d="M30 20h50a10 10 0 0 1 10 10v26" stroke="currentColor" stroke-width="10" fill="none" stroke-linecap="round"/>
+    <rect x="62" y="54" width="56" height="22" rx="11" fill="currentColor"/><rect x="74" y="58" width="32" height="14" rx="7" fill="var(--water)"/>
+    <g fill="var(--water)"><circle cx="72" cy="98" r="4"/><circle cx="90" cy="104" r="4"/><circle cx="108" cy="98" r="4"/><circle cx="80" cy="124" r="4"/><circle cx="100" cy="128" r="4"/><circle cx="90" cy="150" r="4"/></g></svg>`
+};
+
+const $ = id => document.getElementById(id);
+let cat = 0, idx = 0, plan = 0, slots = SETTINGS.promoSlots, endAt = 0;
+const pick = p => p.plans[Math.min(plan, p.plans.length-1)];
+function begOf(ci,pi){
+  const p=CATEGORIES[ci].products[pi]; if(p.beg) return p.beg;
+  let n=0; for(let c=0;c<ci;c++) n+=CATEGORIES[c].products.length; return n+pi+1;
+}
+const rm = n => "RM" + n.toLocaleString("en-MY");
+const imgSrc = p => p.img || "";
+
+/* Simpan slot & timer dalam browser supaya tak hilang bila refresh */
+const STORE_KEY = "live-display-state";
+function loadState(){
+  try{
+    const s = JSON.parse(localStorage.getItem(STORE_KEY) || "null");
+    if(s && Number.isInteger(s.slots) && s.slots >= 0) slots = s.slots;
+    if(s && typeof s.endAt === "number" && s.endAt > 0) endAt = s.endAt;
+  }catch(e){}
+}
+function saveState(){
+  try{ localStorage.setItem(STORE_KEY, JSON.stringify({ slots, endAt })); }catch(e){}
+}
+const visual = (p, kind) => p.img ? `<img src="${imgSrc(p)}" alt="${p.name}">` : `<div style="color:var(--ink);display:contents">${ART[kind]}</div>`;
+
+function renderCats(){
+  $("cats").innerHTML = CATEGORIES.map((c,i)=>
+    `<button class="cat" role="tab" aria-selected="${i===cat}" data-i="${i}">${c.name}<small>${c.products.length}</small></button>`).join("");
+  $("cats").querySelectorAll(".cat").forEach(b=>b.onclick=()=>setCat(+b.dataset.i));
+}
+function renderList(){
+  const c = CATEGORIES[cat];
+  $("queueTitle").textContent = `${c.products.length} produk ${c.name.toLowerCase()}`;
+  $("list").innerHTML = c.products.map((p,i)=>`<li><button class="item" data-i="${i}" aria-current="${i===idx}">
+    <span class="thumb${p.img?" photo":""}"><i class="bn">${begOf(cat,i)}</i>${visual(p,c.kind)}</span><span><b>${p.name}</b><small>${p.ringkas || p.tag}</small></span>
+    <span class="p">${rm(pick(p).bulanan)}</span></button></li>`).join("");
+  $("list").querySelectorAll(".item").forEach(b=>b.onclick=()=>setProduct(+b.dataset.i));
+}
+function renderSpot(){
+  const c = CATEGORIES[cat], p = c.products[idx];
+  $("hero").innerHTML = visual(p,c.kind);
+  $("hero").parentElement.classList.toggle("photo", !!p.img);
+  $("badge").textContent = p.tag;
+  $("catName").textContent = c.name;
+  $("pName").textContent = p.name;
+  $("pLead").textContent = p.ringkas || ""; $("pLead").hidden = !p.ringkas;
+  $("pFitTxt").textContent = p.sesuai || ""; $("pFit").hidden = !p.sesuai;
+  const pl = pick(p);
+  $("pRent").textContent = pl.bulanan;
+  $("planLbl").textContent = "pelan " + pl.label;
+  $("plans").innerHTML = p.plans.map((x,i)=>`<tr tabindex="0" data-i="${i}" aria-selected="${x===pl}">
+    <td>${x.label}</td><td class="amt">${rm(x.bulanan)}/bln</td><td>${x.nota}</td></tr>`).join("");
+  $("plans").querySelectorAll("tr").forEach(r=>{
+    r.onclick=()=>setPlan(+r.dataset.i);
+    r.onkeydown=e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); setPlan(+r.dataset.i);} };
+  });
+  $("pFeats").innerHTML = (p.feats||[]).map(f=>`<li>${f}</li>`).join("");
+  $("pPromo").textContent = p.promo;
+  $("begNo").textContent = `Nombor ${begOf(cat,idx)} dalam beg biru`;
+  $("pos").textContent = `${idx+1} / ${c.products.length}`;
+}
+function keepVisible(){
+  const list=$("list"), el=list.querySelector('[aria-current="true"]'); if(!el) return;
+  const r=el.getBoundingClientRect(), l=list.getBoundingClientRect();
+  if(r.left<l.left||r.right>l.right) list.scrollLeft += r.left-l.left;
+  if(r.top<l.top||r.bottom>l.bottom) list.scrollTop += r.top-l.top;
+}
+function render(){ renderCats(); renderList(); renderSpot(); }
+function setCat(i){ cat=(i+CATEGORIES.length)%CATEGORIES.length; idx=0; render(); }
+function setProduct(i){ const n=CATEGORIES[cat].products.length; idx=(i+n)%n; renderList(); renderSpot(); keepVisible(); }
+
+function setPlan(i){ const n=Math.max(...CATEGORIES.flatMap(c=>c.products.map(p=>p.plans.length))); plan=(i+n)%n; renderList(); renderSpot(); }
+const root=document.documentElement;
+const canFs=!!(root.requestFullscreen||root.webkitRequestFullscreen);
+function toggleFs(){
+  const on=document.fullscreenElement||document.webkitFullscreenElement;
+  if(on) (document.exitFullscreen||document.webkitExitFullscreen).call(document);
+  else (root.requestFullscreen||root.webkitRequestFullscreen).call(root);
+}
+function toggleTheme(){
+  const dark=root.dataset.theme ? root.dataset.theme==="dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+  root.dataset.theme = dark?"light":"dark";
+}
+function renderSlots(){
+  const habis = slots<=0;
+  $("slotCount").textContent = habis ? "Habis" : slots;
+  $("slotLbl").textContent = habis ? "slot promo" : "slot promo tinggal";
+  $("slotBox").classList.toggle("low", slots<=5);
+  $("soldBtn").disabled = habis;
+  saveState();
+}
+function editSlots(){
+  const v = prompt("Berapa slot promo tinggal?", Math.max(slots,0));
+  if(v===null) return;
+  const n = parseInt(v,10);
+  if(!isNaN(n) && n>=0){ slots=n; renderSlots(); }
+}
+function stampSold(){
+  if(slots<=0) return;
+  slots--; renderSlots();
+  const s=$("stamp"); s.classList.remove("show"); void s.offsetWidth; s.classList.add("show");
+}
+function resetTimer(){ endAt = Date.now() + SETTINGS.promoMinutes*60000; saveState(); }
+setInterval(()=>{
+  const left=Math.max(0,endAt-Date.now()), m=Math.floor(left/60000), s=Math.floor(left%60000/1000);
+  $("timer").textContent = `${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+},250);
+
+document.addEventListener("keydown",e=>{
+  const k=e.key.toLowerCase();
+  if(k==="arrowright") setProduct(idx+1);
+  else if(k==="arrowleft") setProduct(idx-1);
+  else if(k==="arrowdown") setCat(cat+1);
+  else if(k==="arrowup") setCat(cat-1);
+  else if(/^[1-9]$/.test(k) && +k<=CATEGORIES.length) setCat(+k-1);
+  else if(k==="p") setPlan(plan+1);
+  else if(k==="s") stampSold();
+  else if(k==="r") editSlots();
+  else if(k==="t") resetTimer();
+  else if(k==="f"){ if(canFs) toggleFs(); }
+  else if(k==="d") toggleTheme();
+  else if(k==="h") $("help").classList.toggle("open");
+  else if(k==="escape") $("help").classList.remove("open");
+  else return;
+  if(k.startsWith("arrow")) e.preventDefault();
+});
+$("prev").onclick=()=>setProduct(idx-1);
+$("soldBtn").onclick=stampSold;
+$("slotBox").onclick=editSlots;
+$("timerBtn").onclick=resetTimer;
+$("themeBtn").onclick=toggleTheme;
+if(canFs) $("fsBtn").onclick=toggleFs; else $("fsBtn").hidden=true;
+/* Leret kiri/kanan atas produk untuk tukar */
+let tx=0, ty=0;
+const spotEl=document.querySelector(".spot");
+spotEl.addEventListener("touchstart",e=>{ tx=e.touches[0].clientX; ty=e.touches[0].clientY; },{passive:true});
+spotEl.addEventListener("touchend",e=>{
+  const dx=e.changedTouches[0].clientX-tx, dy=e.changedTouches[0].clientY-ty;
+  if(Math.abs(dx)>50 && Math.abs(dx)>Math.abs(dy)*1.5) setProduct(idx+(dx<0?1:-1));
+},{passive:true});
+$("next").onclick=()=>setProduct(idx+1);
+$("help").onclick=e=>{ if(e.target.id==="help") $("help").classList.remove("open"); };
+
+$("agentName").textContent = SETTINGS.agentName;
+$("agentRole").textContent = SETTINGS.agentRole;
+$("cta").innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1.2 12H6.2z" fill="#1E6BFF" stroke="#1E6BFF"/><path d="M9 10V6a3 3 0 0 1 6 0v4" stroke="#06222D"/></svg><span>${SETTINGS.cta}</span>`;
+const items = SETTINGS.ticker.map(t=>`<span>${t}</span>`).join("");
+$("track").innerHTML = items + items;
+window.addEventListener("DOMContentLoaded", ()=>{ loadState(); if(!endAt) resetTimer(); renderSlots(); render(); });
+</script>
+@endverbatim
+</body>
+</html>
