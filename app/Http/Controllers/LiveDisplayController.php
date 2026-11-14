@@ -16,6 +16,13 @@ class LiveDisplayController extends Controller
                 $category['products'] = collect($category['products'])
                     ->map(function (array $product): array {
                         $product['img'] = filled($product['img'] ?? null) ? asset($product['img']) : '';
+                        $product['warna'] = collect($product['warna'] ?? [])
+                            ->map(function (array $warna): array {
+                                $warna['img'] = filled($warna['img'] ?? null) ? asset($warna['img']) : '';
+
+                                return $warna;
+                            })
+                            ->all();
 
                         return $product;
                     })

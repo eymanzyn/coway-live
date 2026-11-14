@@ -13,17 +13,19 @@
 | 'sesuai'  : "Sesuai untuk ..." (pilihan).
 | 'spec'    : cip spesifikasi bawah nama, cth '🔥 Panas 1.0 L' (pilihan).
 | 'feats'   : senarai ciri utama, 2–3 baris pendek (pilihan).
-| 'beg'     : nombor dalam beg TikTok. Kalau tiada, ikut susunan (1, 2, 3...).
+| 'warna'   : pilihan warna (pilihan). Setiap satu: 'nama', 'hex' (warna bulatan)
+|             dan 'img' (gambar warna itu – kalau kosong, gambar utama dipakai).
+|             Cth: ['nama' => 'Ciel Blue', 'hex' => '#BCD5EE', 'img' => 'images/neon-blue.png']
 |
-| Pelan sewaan: pelan(7 tahun, 8 tahun, 3+2 tahun, tahun ke-4 & 5).
-| Contoh pelan(95, 89, 109, 79) = RM95 (7 thn), RM89 (8 thn),
-| RM109 tahun 1–3 kemudian RM79 tahun 4–5.
+| Pelan sewaan: pelan(7+0, 5+0, 3+2, tahun ke-4 & 5 bagi pelan 3+2).
+| Contoh pelan(95, 109, 119, 79) = RM95 (7+0), RM109 (5+0),
+| RM119 tahun 1–3 kemudian RM79 tahun 4–5 (3+2).
 |
 */
 
-$pelan = fn (int $tujuh, int $lapan, int $tigaDua, int $lanjutan): array => [
-    ['label' => '7 tahun', 'bulanan' => $tujuh, 'nota' => 'Servis berkala termasuk'],
-    ['label' => '8 tahun', 'bulanan' => $lapan, 'nota' => 'Bayaran bulanan paling rendah'],
+$pelan = fn (int $tujuhKosong, int $limaKosong, int $tigaDua, int $lanjutan): array => [
+    ['label' => '7+0 tahun', 'bulanan' => $tujuhKosong, 'nota' => 'Sewa 7 tahun, servis berkala termasuk'],
+    ['label' => '5+0 tahun', 'bulanan' => $limaKosong, 'nota' => 'Sewa 5 tahun, habis lebih cepat'],
     ['label' => '3+2 tahun', 'bulanan' => $tigaDua, 'nota' => "Tahun 4–5 turun ke RM{$lanjutan}/bln"],
 ];
 
@@ -57,6 +59,13 @@ return [
                 'spec' => ['🔥 Panas 1.0 L', '❄️ Sejuk 1.5 L', '💧 Suhu bilik terus', '🚰 Tangki 2.5 L'],
                 'sesuai' => 'Individu atau keluarga kecil 1–3 orang, dapur ruang terhad',
                 'feats' => ['Penapis Nanotrap™ tangkap virus & bakteria', 'Air suhu bilik aliran terus', 'Ada 5 pilihan warna'],
+                'warna' => [
+                    ['nama' => 'Peach Pink', 'hex' => '#F3C9C4', 'img' => 'images/neon.png'],
+                    ['nama' => 'Mint Green', 'hex' => '#BFE0CB', 'img' => 'images/neon-mint.png'],
+                    ['nama' => 'Ciel Blue', 'hex' => '#BCD5EE', 'img' => 'images/neon-blue.png'],
+                    ['nama' => 'Pebble Gray', 'hex' => '#9A9DA3', 'img' => 'images/neon-gray.png'],
+                    ['nama' => 'Porcelain White', 'hex' => '#F2F1EE', 'img' => 'images/neon-white.png'],
+                ],
                 'promo' => 'Tiada deposit', 'img' => 'images/neon.png'],
             ['name' => 'Dazzie', 'tag' => 'Ultra kompak', 'plans' => $pelan(99, 79, 120, 79),
                 'ringkas' => 'Ultra kompak dengan 4 tetapan air panas',
@@ -75,6 +84,10 @@ return [
                 'spec' => ['🔥 Panas 1.5 L', '❄️ Sejuk 1.8 L', '💧 Suhu bilik 1.8 L', '🧊 Ais 0.7 kg', '🚰 Tangki 5.1 L'],
                 'sesuai' => 'Keluarga 2–4 orang yang kerap guna ais & minuman sejuk',
                 'feats' => ['Pembuat ais terbina dalam', 'Sistem dwi-UV', 'Kunci ais & air panas'],
+                'warna' => [
+                    ['nama' => 'Pebble Gray', 'hex' => '#3A3D42', 'img' => 'images/ais.png'],
+                    ['nama' => 'Porcelain White', 'hex' => '#F4F2EE', 'img' => 'images/ais-white.png'],
+                ],
                 'promo' => 'Rebat RM300', 'img' => 'images/ais.png'],
             // HARGA, TAG & PROMO 6 PENAPIS AIR DI BAWAH MASIH SEMENTARA – tukar ikut harga sebenar.
             ['name' => 'Cinnamon', 'tag' => 'Suhu bilik', 'plans' => $pelan(39, 35, 49, 32),
@@ -120,6 +133,11 @@ return [
                 'ringkas' => 'Penapis udara terbaru untuk ruang besar',
                 'sesuai' => 'Ruang tamu besar dan rumah konsep terbuka',
                 'feats' => ['Penapisan 3 peringkat dua sisi', 'Model baharu 2026', '3 pilihan warna'],
+                'warna' => [
+                    ['nama' => 'Sand Beige', 'hex' => '#BBA99A', 'img' => 'images/atrium.png'],
+                    ['nama' => 'Porcelain White', 'hex' => '#EFEDE9', 'img' => 'images/atrium-white.png'],
+                    ['nama' => 'Pebble Gray', 'hex' => '#8E9196', 'img' => 'images/atrium-gray.png'],
+                ],
                 'promo' => 'Penapis ganti percuma', 'img' => 'images/atrium.png'],
             ['name' => 'Lombok 3', 'tag' => 'Plasma & ion', 'plans' => $pelan(59, 53, 73, 43),
                 'ringkas' => 'Penapis udara dengan plasma & ioniser',

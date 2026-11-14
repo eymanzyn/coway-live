@@ -23,6 +23,13 @@ class ExportLiveDisplay extends Command
                 $category['products'] = collect($category['products'])
                     ->map(function (array $product): array {
                         $product['img'] = filled($product['img'] ?? null) ? $product['img'] : '';
+                        $product['warna'] = collect($product['warna'] ?? [])
+                            ->map(function (array $warna): array {
+                                $warna['img'] = filled($warna['img'] ?? null) ? $warna['img'] : '';
+
+                                return $warna;
+                            })
+                            ->all();
 
                         return $product;
                     })
