@@ -380,7 +380,7 @@ function loadState(){
 function saveState(){
   try{ localStorage.setItem(STORE_KEY, JSON.stringify({ slots, endAt })); }catch(e){}
 }
-const visual = (p, kind) => p.img ? `<img src="${imgSrc(p)}" alt="${p.name}">` : `<div style="color:var(--ink);display:contents">${ART[kind]}</div>`;
+const visual = (p, kind) => p.img ? `<img src="${imgSrc(p)}" alt="${p.name}">` : `<div style="color:var(--ink);display:contents">${ART[kind] || ""}</div>`;
 
 function renderCats(){
   $("cats").innerHTML = CATEGORIES.map((c,i)=>

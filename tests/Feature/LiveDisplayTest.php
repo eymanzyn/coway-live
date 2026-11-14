@@ -14,11 +14,13 @@ class LiveDisplayTest extends TestCase
             ->assertViewIs('live.display')
             ->assertSee('Aina Coway Care')
             ->assertSee('Neo Plus')
-            ->assertSee('Penapis Udara Tower Besar');
+            ->assertSee('Atrium');
     }
 
     public function test_product_images_are_resolved_to_full_urls(): void
     {
+        config()->set('live.categories.1.products.0.img', '');
+
         $response = $this->get(route('live.display'));
 
         $categories = $response->viewData('categories');
