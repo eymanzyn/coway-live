@@ -115,6 +115,10 @@ button{font:inherit;color:inherit;cursor:pointer}
 .pedestal.photo::after{background:#0D3446}
 .pedestal.photo #hero{inset:9% 18% 11%}
 .item .thumb.photo{background:#DCEEF4}
+.specs{list-style:none;margin:0 0 14px;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.specs[hidden]{display:none}
+.specs li{background:var(--bg);border:1.5px solid var(--line);border-radius:999px;padding:6px 14px;
+  font-weight:700;font-size:.95rem;letter-spacing:.03em;text-transform:uppercase;white-space:nowrap}
 .feats{list-style:none;margin:0 0 auto;padding:0;display:grid;gap:8px}
 .feats li{display:flex;gap:10px;align-items:flex-start;font-size:1.05rem}
 .feats li::before{content:"";flex:none;width:10px;height:10px;margin-top:.45em;border-radius:50%;background:var(--water)}
@@ -289,6 +293,7 @@ button{font:inherit;color:inherit;cursor:pointer}
       <span class="catname" id="catName"></span>
       <h1 id="pName"></h1>
       <p class="lead" id="pLead"></p>
+      <ul class="specs" id="pSpecs"></ul>
       <div class="price"><span class="rm">RM</span><span class="num" id="pRent"></span><span class="per">sebulan<br><b id="planLbl"></b></span></div>
       <table class="plans"><tbody id="plans"></tbody></table>
       <p class="fit" id="pFit"><span>Sesuai untuk</span><b id="pFitTxt"></b></p>
@@ -404,6 +409,7 @@ function renderSpot(){
   $("pName").textContent = p.name;
   $("pLead").textContent = p.ringkas || ""; $("pLead").hidden = !p.ringkas;
   $("pFitTxt").textContent = p.sesuai || ""; $("pFit").hidden = !p.sesuai;
+  $("pSpecs").innerHTML = (p.spec||[]).map(s=>`<li>${s}</li>`).join(""); $("pSpecs").hidden = !(p.spec||[]).length;
   const pl = pick(p);
   $("pRent").textContent = pl.bulanan;
   $("planLbl").textContent = "pelan " + pl.label;

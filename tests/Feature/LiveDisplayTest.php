@@ -14,6 +14,7 @@ class LiveDisplayTest extends TestCase
             ->assertViewIs('live.display')
             ->assertSee('Aina Coway Care')
             ->assertSee('Neo Plus')
+            ->assertSee('Tangki 5.8 L')
             ->assertSee('Atrium');
     }
 
