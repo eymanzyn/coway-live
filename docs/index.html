@@ -193,11 +193,35 @@ button{font:inherit;color:inherit;cursor:pointer}
 .nav button{width:44px;height:44px;border-radius:50%;border:1.5px solid var(--line);background:transparent;font-size:1.1rem}
 
 /* Stamp */
-.stamp{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;opacity:0}
-.stamp span{font-family:var(--display);font-weight:800;font-size:clamp(3rem,8vw,7rem);color:var(--accent);
-  border:8px solid var(--accent);border-radius:20px;padding:4px 28px;transform:rotate(-8deg);background:var(--surface)}
-.stamp.show{animation:stamp 1.6s ease-out}
-@keyframes stamp{0%{opacity:0;transform:scale(1.6)}15%{opacity:1;transform:scale(1)}75%{opacity:1}100%{opacity:0}}
+.stamp{position:absolute;inset:0;z-index:10;display:grid;place-items:center;pointer-events:none;opacity:0;visibility:hidden;
+  background:color-mix(in srgb, var(--bg) 50%, transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.stamp.show{animation:stampFade 2.4s ease forwards}
+@keyframes stampFade{0%{opacity:0;visibility:visible}8%{opacity:1}82%{opacity:1}100%{opacity:0;visibility:hidden}}
+.stamp-card{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;padding:30px 48px 26px;
+  border-radius:28px;background:color-mix(in srgb, var(--surface) 94%, transparent);border:1px solid var(--glass-line);text-align:center;
+  box-shadow:0 30px 70px -20px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.05) inset}
+.stamp.show .stamp-card{animation:pop .7s cubic-bezier(.2,1.5,.4,1) both}
+@keyframes pop{from{opacity:0;transform:scale(.4) rotate(-8deg)}}
+.tick{width:clamp(72px,9vw,104px);height:auto;overflow:visible;margin-bottom:6px}
+.tick circle{fill:#22C27E;transform-box:fill-box;transform-origin:center;filter:drop-shadow(0 8px 18px rgba(34,194,126,.55))}
+.tick path{fill:none;stroke:#fff;stroke-width:5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:40;stroke-dashoffset:0}
+.tick .ring{fill:none;stroke:#22C27E;stroke-width:3;filter:none;opacity:0}
+.stamp.show .tick circle:not(.ring){animation:tickIn .5s .12s cubic-bezier(.2,1.6,.4,1) both}
+.stamp.show .tick path{animation:draw .4s .45s ease-out both}
+.stamp.show .tick .ring{animation:ring 1s .3s ease-out both}
+@keyframes tickIn{from{transform:scale(0)}}
+@keyframes draw{from{stroke-dashoffset:40}}
+@keyframes ring{from{opacity:.9;transform:scale(1)}to{opacity:0;transform:scale(1.9)}}
+.stamp-card b{font-family:var(--display);font-weight:800;font-size:clamp(2.4rem,5.5vw,4.4rem);line-height:1;letter-spacing:-.02em;
+  background:linear-gradient(90deg, var(--accent), var(--promo2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.stamp-card span{font-weight:600;color:var(--muted);font-size:1.05rem}
+.stamp-card span strong{color:var(--ink)}
+.confetti{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.confetti i{position:absolute;left:50%;top:42%;width:9px;height:15px;border-radius:2px;background:var(--c);opacity:0;
+  animation:burst 1.5s cubic-bezier(.12,.75,.3,1) var(--d) forwards}
+.confetti i:nth-child(3n){width:10px;height:10px;border-radius:50%}
+@keyframes burst{0%{opacity:1;transform:translate(-50%,-50%) rotate(0) scale(.6)}
+  70%{opacity:1}100%{opacity:0;transform:translate(calc(-50% + var(--x)), calc(-50% + var(--y))) rotate(var(--r)) scale(1)}}
 
 /* Queue */
 .queue{background:var(--surface);border-radius:28px;padding:18px;display:flex;flex-direction:column;min-height:0}
@@ -338,7 +362,8 @@ button{font:inherit;color:inherit;cursor:pointer}
 @media (hover:none){ .hint{display:none} }
 @media (prefers-reduced-motion: reduce){
   .track,.live::before{animation:none}
-  .stamp.show{animation-duration:.01s}
+  .stamp.show .stamp-card,.stamp.show .tick *{animation:none!important}
+  .confetti{display:none}
   #hero img,#hero svg,.pedestal::after,.promo::after,.timer.urgent,#hero.enter,#hero.swap,.info.enter > *{animation:none!important}
   .plan{transition:none}
 }
@@ -380,7 +405,14 @@ button{font:inherit;color:inherit;cursor:pointer}
       <button id="prev" aria-label="Produk sebelum">‹</button>
       <button id="next" aria-label="Produk seterusnya">›</button>
     </div>
-    <div class="stamp" id="stamp"><span>DITEMPAH!</span></div>
+    <div class="stamp" id="stamp" aria-hidden="true">
+      <div class="confetti" id="confetti"></div>
+      <div class="stamp-card">
+        <svg class="tick" viewBox="0 0 52 52"><circle class="ring" cx="26" cy="26" r="24"/><circle cx="26" cy="26" r="24"/><path d="M15 27l7 7 15-16"/></svg>
+        <b>DITEMPAH!</b>
+        <span id="stampSub"></span>
+      </div>
+    </div>
   </section>
 
   <aside class="queue">
@@ -591,7 +623,16 @@ function editSlots(){
 function stampSold(){
   if(slots<=0) return;
   slots--; renderSlots();
-  const s=$("stamp"); s.classList.remove("show"); void s.offsetWidth; s.classList.add("show");
+  const p = CATEGORIES[cat].products[idx];
+  $("stampSub").innerHTML = `<strong>${p.name}</strong> · ${slots > 0 ? `${slots} slot promo tinggal` : "Slot promo habis!"}`;
+  if(!reduceMotion){
+    const colours = ["#FF4F64","#FF8A4C","#FFC94D","#22C27E","#4CC3E3","#7C6CFF"];
+    $("confetti").innerHTML = Array.from({length:44}, () => {
+      const angle = Math.random()*Math.PI*2, dist = 160 + Math.random()*260;
+      return `<i style="--c:${colours[Math.floor(Math.random()*colours.length)]};--x:${Math.round(Math.cos(angle)*dist)}px;--y:${Math.round(Math.sin(angle)*dist*0.8 + 60)}px;--r:${Math.round(Math.random()*720-360)}deg;--d:${(Math.random()*0.15).toFixed(2)}s"></i>`;
+    }).join("");
+  }
+  replay($("stamp"), "show");
 }
 function resetTimer(){ endAt = Date.now() + SETTINGS.promoMinutes*60000; saveState(); }
 setInterval(()=>{
