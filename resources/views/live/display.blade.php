@@ -71,20 +71,9 @@ button{font:inherit;color:inherit;cursor:pointer}
 .live::before{content:"";width:9px;height:9px;border-radius:50%;background:currentColor;animation:blink 1.2s infinite}
 @keyframes blink{50%{opacity:.25}}
 .spacer{flex:1}
-.timer{display:flex;align-items:baseline;gap:10px;padding:6px 14px;border:2px solid var(--accent);border-radius:12px;background:transparent;min-height:44px}
 .tools{display:flex;gap:6px}
 .icon{width:44px;height:44px;border-radius:12px;border:1.5px solid var(--line);background:transparent;display:grid;place-items:center;padding:0}
 .icon svg{width:20px;height:20px}
-.soldbtn{background:var(--accent);color:var(--accent-ink);border:0;border-radius:12px;padding:0 16px;min-height:44px;font-weight:700;white-space:nowrap}
-.soldbtn:active{transform:scale(.96)}
-.timer span{font-size:.85rem;color:var(--muted)}
-.timer b{font-family:var(--display);font-size:1.6rem;font-variant-numeric:tabular-nums;color:var(--accent)}
-.sold{display:flex;align-items:baseline;gap:8px}
-.sold{background:transparent;border:0;padding:0;min-height:44px;align-items:center}
-.sold b{font-family:var(--display);font-size:1.6rem;font-variant-numeric:tabular-nums}
-.sold.low b{color:var(--accent)}
-.soldbtn:disabled{opacity:.45;cursor:not-allowed}
-.sold span{color:var(--muted);font-size:.85rem}
 
 /* Category tabs */
 .cats{display:flex;gap:8px;padding:12px 24px;overflow-x:auto;scrollbar-width:none}
@@ -186,42 +175,9 @@ button{font:inherit;color:inherit;cursor:pointer}
   background:linear-gradient(100deg, transparent 30%, rgba(255,255,255,.38) 50%, transparent 70%);
   transform:translateX(-100%);animation:shine 3.4s ease-in-out infinite}
 @keyframes shine{55%,100%{transform:translateX(100%)}}
-.timer.urgent{animation:pulse 1s ease-in-out infinite;background:color-mix(in srgb, var(--accent) 16%, transparent)}
-@keyframes pulse{50%{transform:scale(1.05);box-shadow:0 0 0 6px color-mix(in srgb, var(--accent) 25%, transparent)}}
 .promo small{font-weight:500;opacity:.9;font-size:.9rem}
 .nav{position:absolute;right:28px;top:28px;display:flex;gap:8px;align-items:center;color:var(--muted);font-size:.9rem}
 .nav button{width:44px;height:44px;border-radius:50%;border:1.5px solid var(--line);background:transparent;font-size:1.1rem}
-
-/* Stamp */
-.stamp{position:absolute;inset:0;z-index:10;display:grid;place-items:center;pointer-events:none;opacity:0;visibility:hidden;
-  background:color-mix(in srgb, var(--bg) 50%, transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
-.stamp.show{animation:stampFade 2.4s ease forwards}
-@keyframes stampFade{0%{opacity:0;visibility:visible}8%{opacity:1}82%{opacity:1}100%{opacity:0;visibility:hidden}}
-.stamp-card{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;padding:30px 48px 26px;
-  border-radius:28px;background:color-mix(in srgb, var(--surface) 94%, transparent);border:1px solid var(--glass-line);text-align:center;
-  box-shadow:0 30px 70px -20px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.05) inset}
-.stamp.show .stamp-card{animation:pop .7s cubic-bezier(.2,1.5,.4,1) both}
-@keyframes pop{from{opacity:0;transform:scale(.4) rotate(-8deg)}}
-.tick{width:clamp(72px,9vw,104px);height:auto;overflow:visible;margin-bottom:6px}
-.tick circle{fill:#22C27E;transform-box:fill-box;transform-origin:center;filter:drop-shadow(0 8px 18px rgba(34,194,126,.55))}
-.tick path{fill:none;stroke:#fff;stroke-width:5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:40;stroke-dashoffset:0}
-.tick .ring{fill:none;stroke:#22C27E;stroke-width:3;filter:none;opacity:0}
-.stamp.show .tick circle:not(.ring){animation:tickIn .5s .12s cubic-bezier(.2,1.6,.4,1) both}
-.stamp.show .tick path{animation:draw .4s .45s ease-out both}
-.stamp.show .tick .ring{animation:ring 1s .3s ease-out both}
-@keyframes tickIn{from{transform:scale(0)}}
-@keyframes draw{from{stroke-dashoffset:40}}
-@keyframes ring{from{opacity:.9;transform:scale(1)}to{opacity:0;transform:scale(1.9)}}
-.stamp-card b{font-family:var(--display);font-weight:800;font-size:clamp(2.4rem,5.5vw,4.4rem);line-height:1;letter-spacing:-.02em;
-  background:linear-gradient(90deg, var(--accent), var(--promo2));-webkit-background-clip:text;background-clip:text;color:transparent}
-.stamp-card span{font-weight:600;color:var(--muted);font-size:1.05rem}
-.stamp-card span strong{color:var(--ink)}
-.confetti{position:absolute;inset:0;overflow:hidden;pointer-events:none}
-.confetti i{position:absolute;left:50%;top:42%;width:9px;height:15px;border-radius:2px;background:var(--c);opacity:0;
-  animation:burst 1.5s cubic-bezier(.12,.75,.3,1) var(--d) forwards}
-.confetti i:nth-child(3n){width:10px;height:10px;border-radius:50%}
-@keyframes burst{0%{opacity:1;transform:translate(-50%,-50%) rotate(0) scale(.6)}
-  70%{opacity:1}100%{opacity:0;transform:translate(calc(-50% + var(--x)), calc(-50% + var(--y))) rotate(var(--r)) scale(1)}}
 
 /* Queue */
 .queue{background:var(--surface);border-radius:28px;padding:18px;display:flex;flex-direction:column;min-height:0}
@@ -311,7 +267,6 @@ button{font:inherit;color:inherit;cursor:pointer}
   .top{flex-wrap:wrap;row-gap:10px}
   .agent b,.agent span{white-space:nowrap}
   .agent span{display:none}
-  .sold span{max-width:70px;line-height:1.15}
   .top{gap:10px;padding-left:16px;padding-right:16px}
   .foot{position:sticky;bottom:0;z-index:5}
   .hint{display:none}
@@ -321,23 +276,13 @@ button{font:inherit;color:inherit;cursor:pointer}
 @media (max-width:900px){
   .top{display:flex;flex-wrap:wrap;align-items:center}
   .agent{order:1;flex:1;min-width:0}.live{order:2}.tools{order:3}
-  .spacer{display:block!important;order:4;flex-basis:100%;height:0}
-  .sold{order:5;flex:1;min-width:0}.timer{order:6}.soldbtn{order:7}
-  .sold span{max-width:none}
 }
 /* Phone */
 @media (max-width:640px){
   .top{display:flex;flex-wrap:wrap;gap:10px;padding:10px 14px;align-items:center}
   .agent{order:1;flex:1;min-width:0}.live{order:2}.tools{order:3}
-  .spacer{display:block!important;order:4;flex-basis:100%;height:0}
-  .sold{order:5;flex:1;min-width:0}.timer{order:6}.soldbtn{order:7}
-  .sold span{max-width:70px;line-height:1.15}
   .agent span{display:none}
   .agent b{font-size:1.1rem}
-  .sold b,.timer b{font-size:1.2rem}
-  .sold span,.timer span{font-size:.75rem}
-  .timer{padding:4px 10px}
-  .soldbtn{padding:0 12px}
   .cats{padding:10px 14px}
   .stage{padding:2px 14px 14px}
   .spot{grid-template-columns:1fr;padding:16px;gap:14px;border-radius:22px}
@@ -362,9 +307,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 @media (hover:none){ .hint{display:none} }
 @media (prefers-reduced-motion: reduce){
   .track,.live::before{animation:none}
-  .stamp.show .stamp-card,.stamp.show .tick *{animation:none!important}
-  .confetti{display:none}
-  #hero img,#hero svg,.pedestal::after,.promo::after,.timer.urgent,#hero.enter,#hero.swap,.info.enter > *{animation:none!important}
+  #hero img,#hero svg,.pedestal::after,.promo::after,#hero.enter,#hero.swap,.info.enter > *{animation:none!important}
   .plan{transition:none}
 }
 </style>
@@ -375,9 +318,6 @@ button{font:inherit;color:inherit;cursor:pointer}
   <div class="agent"><b id="agentName"></b><span id="agentRole"></span></div>
   <span class="live">LIVE</span>
   <div class="spacer"></div>
-  <button class="sold" id="slotBox" aria-label="Ubah bilangan slot promo" title="Tekan untuk ubah bilangan slot"><b id="slotCount">20</b><span id="slotLbl">slot promo tinggal</span></button>
-  <button class="soldbtn" id="soldBtn">−1 slot</button>
-  <button class="timer" id="timerBtn" aria-label="Mula semula timer promo" title="Tekan untuk mula semula"><span>Promo tamat</span><b id="timer">15:00</b></button>
   <div class="tools">
     <button class="icon" id="themeBtn" aria-label="Tukar mod gelap atau cerah"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg></button>
     <button class="icon" id="fsBtn" aria-label="Skrin penuh"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
@@ -405,14 +345,6 @@ button{font:inherit;color:inherit;cursor:pointer}
       <button id="prev" aria-label="Produk sebelum">‹</button>
       <button id="next" aria-label="Produk seterusnya">›</button>
     </div>
-    <div class="stamp" id="stamp" aria-hidden="true">
-      <div class="confetti" id="confetti"></div>
-      <div class="stamp-card">
-        <svg class="tick" viewBox="0 0 52 52"><circle class="ring" cx="26" cy="26" r="24"/><circle cx="26" cy="26" r="24"/><path d="M15 27l7 7 15-16"/></svg>
-        <b>DITEMPAH!</b>
-        <span id="stampSub"></span>
-      </div>
-    </div>
   </section>
 
   <aside class="queue">
@@ -435,9 +367,6 @@ button{font:inherit;color:inherit;cursor:pointer}
       <dt><kbd>↑</kbd> <kbd>↓</kbd> / <kbd>1</kbd>–<kbd>9</kbd></dt><dd>Tukar kategori</dd>
       <dt><kbd>P</kbd></dt><dd>Tukar pelan (7+0 / 5+0 / 3+2)</dd>
       <dt><kbd>C</kbd></dt><dd>Tukar warna produk (jika ada)</dd>
-      <dt><kbd>S</kbd></dt><dd>Tolak 1 slot promo dan tunjuk cop “Ditempah!”</dd>
-      <dt><kbd>R</kbd></dt><dd>Ubah bilangan slot (betulkan salah tekan)</dd>
-      <dt><kbd>T</kbd></dt><dd>Mula semula timer promo</dd>
       <dt><kbd>F</kbd></dt><dd>Skrin penuh</dd>
       <dt><kbd>D</kbd></dt><dd>Tukar mod gelap / cerah</dd>
       <dt><kbd>H</kbd> / <kbd>Esc</kbd></dt><dd>Tutup panduan ini</dd>
@@ -473,23 +402,11 @@ const ART = {
 };
 
 const $ = id => document.getElementById(id);
-let cat = 0, idx = 0, plan = 0, colorIdx = 0, slots = SETTINGS.promoSlots, endAt = 0;
+let cat = 0, idx = 0, plan = 0, colorIdx = 0;
 const pick = p => p.plans[Math.min(plan, p.plans.length-1)];
 const rm = n => "RM" + n.toLocaleString("en-MY");
 const imgSrc = p => p.img || "";
 
-/* Simpan slot & timer dalam browser supaya tak hilang bila refresh */
-const STORE_KEY = "live-display-state";
-function loadState(){
-  try{
-    const s = JSON.parse(localStorage.getItem(STORE_KEY) || "null");
-    if(s && Number.isInteger(s.slots) && s.slots >= 0) slots = s.slots;
-    if(s && typeof s.endAt === "number" && s.endAt > 0) endAt = s.endAt;
-  }catch(e){}
-}
-function saveState(){
-  try{ localStorage.setItem(STORE_KEY, JSON.stringify({ slots, endAt })); }catch(e){}
-}
 const KIND_ICON = { water:"💧", air:"🌬️", mattress:"🛏️", massage:"💆", aircond:"❄️", bidet:"🚽", shower:"🚿" };
 const SPEC_KIND = [["🔥","hot"],["❄","cold"],["🧊","ice"],["🚰","tank"]];
 const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -606,40 +523,6 @@ function toggleTheme(){
   const dark=root.dataset.theme ? root.dataset.theme==="dark" : matchMedia("(prefers-color-scheme: dark)").matches;
   root.dataset.theme = dark?"light":"dark";
 }
-function renderSlots(){
-  const habis = slots<=0;
-  $("slotCount").textContent = habis ? "Habis" : slots;
-  $("slotLbl").textContent = habis ? "slot promo" : "slot promo tinggal";
-  $("slotBox").classList.toggle("low", slots<=5);
-  $("soldBtn").disabled = habis;
-  saveState();
-}
-function editSlots(){
-  const v = prompt("Berapa slot promo tinggal?", Math.max(slots,0));
-  if(v===null) return;
-  const n = parseInt(v,10);
-  if(!isNaN(n) && n>=0){ slots=n; renderSlots(); }
-}
-function stampSold(){
-  if(slots<=0) return;
-  slots--; renderSlots();
-  const p = CATEGORIES[cat].products[idx];
-  $("stampSub").innerHTML = `<strong>${p.name}</strong> · ${slots > 0 ? `${slots} slot promo tinggal` : "Slot promo habis!"}`;
-  if(!reduceMotion){
-    const colours = ["#FF4F64","#FF8A4C","#FFC94D","#22C27E","#4CC3E3","#7C6CFF"];
-    $("confetti").innerHTML = Array.from({length:44}, () => {
-      const angle = Math.random()*Math.PI*2, dist = 160 + Math.random()*260;
-      return `<i style="--c:${colours[Math.floor(Math.random()*colours.length)]};--x:${Math.round(Math.cos(angle)*dist)}px;--y:${Math.round(Math.sin(angle)*dist*0.8 + 60)}px;--r:${Math.round(Math.random()*720-360)}deg;--d:${(Math.random()*0.15).toFixed(2)}s"></i>`;
-    }).join("");
-  }
-  replay($("stamp"), "show");
-}
-function resetTimer(){ endAt = Date.now() + SETTINGS.promoMinutes*60000; saveState(); }
-setInterval(()=>{
-  const left=Math.max(0,endAt-Date.now()), m=Math.floor(left/60000), s=Math.floor(left%60000/1000);
-  $("timer").textContent = `${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
-  $("timerBtn").classList.toggle("urgent", left > 0 && left < 60000);
-},250);
 
 document.addEventListener("keydown",e=>{
   const k=e.key.toLowerCase();
@@ -650,9 +533,6 @@ document.addEventListener("keydown",e=>{
   else if(/^[1-9]$/.test(k) && +k<=CATEGORIES.length) setCat(+k-1);
   else if(k==="p") setPlan(plan+1);
   else if(k==="c") setColor(colorIdx+1);
-  else if(k==="s") stampSold();
-  else if(k==="r") editSlots();
-  else if(k==="t") resetTimer();
   else if(k==="f"){ if(canFs) toggleFs(); }
   else if(k==="d") toggleTheme();
   else if(k==="h") $("help").classList.toggle("open");
@@ -661,9 +541,6 @@ document.addEventListener("keydown",e=>{
   if(k.startsWith("arrow")) e.preventDefault();
 });
 $("prev").onclick=()=>setProduct(idx-1);
-$("soldBtn").onclick=stampSold;
-$("slotBox").onclick=editSlots;
-$("timerBtn").onclick=resetTimer;
 $("themeBtn").onclick=toggleTheme;
 if(canFs) $("fsBtn").onclick=toggleFs; else $("fsBtn").hidden=true;
 /* Leret kiri/kanan atas produk untuk tukar */
@@ -682,7 +559,7 @@ $("agentRole").textContent = SETTINGS.agentRole;
 $("cta").innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1.2 12H6.2z" fill="#1E6BFF" stroke="#1E6BFF"/><path d="M9 10V6a3 3 0 0 1 6 0v4" stroke="#06222D"/></svg><span>${SETTINGS.cta}</span>`;
 const items = SETTINGS.ticker.map(t=>`<span>${t}</span>`).join("");
 $("track").innerHTML = items + items;
-window.addEventListener("DOMContentLoaded", ()=>{ loadState(); if(!endAt) resetTimer(); renderSlots(); render(1); });
+window.addEventListener("DOMContentLoaded", ()=>{ render(1); });
 </script>
 @endverbatim
 </body>

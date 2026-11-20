@@ -71,20 +71,9 @@ button{font:inherit;color:inherit;cursor:pointer}
 .live::before{content:"";width:9px;height:9px;border-radius:50%;background:currentColor;animation:blink 1.2s infinite}
 @keyframes blink{50%{opacity:.25}}
 .spacer{flex:1}
-.timer{display:flex;align-items:baseline;gap:10px;padding:6px 14px;border:2px solid var(--accent);border-radius:12px;background:transparent;min-height:44px}
 .tools{display:flex;gap:6px}
 .icon{width:44px;height:44px;border-radius:12px;border:1.5px solid var(--line);background:transparent;display:grid;place-items:center;padding:0}
 .icon svg{width:20px;height:20px}
-.soldbtn{background:var(--accent);color:var(--accent-ink);border:0;border-radius:12px;padding:0 16px;min-height:44px;font-weight:700;white-space:nowrap}
-.soldbtn:active{transform:scale(.96)}
-.timer span{font-size:.85rem;color:var(--muted)}
-.timer b{font-family:var(--display);font-size:1.6rem;font-variant-numeric:tabular-nums;color:var(--accent)}
-.sold{display:flex;align-items:baseline;gap:8px}
-.sold{background:transparent;border:0;padding:0;min-height:44px;align-items:center}
-.sold b{font-family:var(--display);font-size:1.6rem;font-variant-numeric:tabular-nums}
-.sold.low b{color:var(--accent)}
-.soldbtn:disabled{opacity:.45;cursor:not-allowed}
-.sold span{color:var(--muted);font-size:.85rem}
 
 /* Category tabs */
 .cats{display:flex;gap:8px;padding:12px 24px;overflow-x:auto;scrollbar-width:none}
@@ -186,42 +175,9 @@ button{font:inherit;color:inherit;cursor:pointer}
   background:linear-gradient(100deg, transparent 30%, rgba(255,255,255,.38) 50%, transparent 70%);
   transform:translateX(-100%);animation:shine 3.4s ease-in-out infinite}
 @keyframes shine{55%,100%{transform:translateX(100%)}}
-.timer.urgent{animation:pulse 1s ease-in-out infinite;background:color-mix(in srgb, var(--accent) 16%, transparent)}
-@keyframes pulse{50%{transform:scale(1.05);box-shadow:0 0 0 6px color-mix(in srgb, var(--accent) 25%, transparent)}}
 .promo small{font-weight:500;opacity:.9;font-size:.9rem}
 .nav{position:absolute;right:28px;top:28px;display:flex;gap:8px;align-items:center;color:var(--muted);font-size:.9rem}
 .nav button{width:44px;height:44px;border-radius:50%;border:1.5px solid var(--line);background:transparent;font-size:1.1rem}
-
-/* Stamp */
-.stamp{position:absolute;inset:0;z-index:10;display:grid;place-items:center;pointer-events:none;opacity:0;visibility:hidden;
-  background:color-mix(in srgb, var(--bg) 50%, transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
-.stamp.show{animation:stampFade 2.4s ease forwards}
-@keyframes stampFade{0%{opacity:0;visibility:visible}8%{opacity:1}82%{opacity:1}100%{opacity:0;visibility:hidden}}
-.stamp-card{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;padding:30px 48px 26px;
-  border-radius:28px;background:color-mix(in srgb, var(--surface) 94%, transparent);border:1px solid var(--glass-line);text-align:center;
-  box-shadow:0 30px 70px -20px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.05) inset}
-.stamp.show .stamp-card{animation:pop .7s cubic-bezier(.2,1.5,.4,1) both}
-@keyframes pop{from{opacity:0;transform:scale(.4) rotate(-8deg)}}
-.tick{width:clamp(72px,9vw,104px);height:auto;overflow:visible;margin-bottom:6px}
-.tick circle{fill:#22C27E;transform-box:fill-box;transform-origin:center;filter:drop-shadow(0 8px 18px rgba(34,194,126,.55))}
-.tick path{fill:none;stroke:#fff;stroke-width:5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:40;stroke-dashoffset:0}
-.tick .ring{fill:none;stroke:#22C27E;stroke-width:3;filter:none;opacity:0}
-.stamp.show .tick circle:not(.ring){animation:tickIn .5s .12s cubic-bezier(.2,1.6,.4,1) both}
-.stamp.show .tick path{animation:draw .4s .45s ease-out both}
-.stamp.show .tick .ring{animation:ring 1s .3s ease-out both}
-@keyframes tickIn{from{transform:scale(0)}}
-@keyframes draw{from{stroke-dashoffset:40}}
-@keyframes ring{from{opacity:.9;transform:scale(1)}to{opacity:0;transform:scale(1.9)}}
-.stamp-card b{font-family:var(--display);font-weight:800;font-size:clamp(2.4rem,5.5vw,4.4rem);line-height:1;letter-spacing:-.02em;
-  background:linear-gradient(90deg, var(--accent), var(--promo2));-webkit-background-clip:text;background-clip:text;color:transparent}
-.stamp-card span{font-weight:600;color:var(--muted);font-size:1.05rem}
-.stamp-card span strong{color:var(--ink)}
-.confetti{position:absolute;inset:0;overflow:hidden;pointer-events:none}
-.confetti i{position:absolute;left:50%;top:42%;width:9px;height:15px;border-radius:2px;background:var(--c);opacity:0;
-  animation:burst 1.5s cubic-bezier(.12,.75,.3,1) var(--d) forwards}
-.confetti i:nth-child(3n){width:10px;height:10px;border-radius:50%}
-@keyframes burst{0%{opacity:1;transform:translate(-50%,-50%) rotate(0) scale(.6)}
-  70%{opacity:1}100%{opacity:0;transform:translate(calc(-50% + var(--x)), calc(-50% + var(--y))) rotate(var(--r)) scale(1)}}
 
 /* Queue */
 .queue{background:var(--surface);border-radius:28px;padding:18px;display:flex;flex-direction:column;min-height:0}
@@ -311,7 +267,6 @@ button{font:inherit;color:inherit;cursor:pointer}
   .top{flex-wrap:wrap;row-gap:10px}
   .agent b,.agent span{white-space:nowrap}
   .agent span{display:none}
-  .sold span{max-width:70px;line-height:1.15}
   .top{gap:10px;padding-left:16px;padding-right:16px}
   .foot{position:sticky;bottom:0;z-index:5}
   .hint{display:none}
@@ -321,23 +276,13 @@ button{font:inherit;color:inherit;cursor:pointer}
 @media (max-width:900px){
   .top{display:flex;flex-wrap:wrap;align-items:center}
   .agent{order:1;flex:1;min-width:0}.live{order:2}.tools{order:3}
-  .spacer{display:block!important;order:4;flex-basis:100%;height:0}
-  .sold{order:5;flex:1;min-width:0}.timer{order:6}.soldbtn{order:7}
-  .sold span{max-width:none}
 }
 /* Phone */
 @media (max-width:640px){
   .top{display:flex;flex-wrap:wrap;gap:10px;padding:10px 14px;align-items:center}
   .agent{order:1;flex:1;min-width:0}.live{order:2}.tools{order:3}
-  .spacer{display:block!important;order:4;flex-basis:100%;height:0}
-  .sold{order:5;flex:1;min-width:0}.timer{order:6}.soldbtn{order:7}
-  .sold span{max-width:70px;line-height:1.15}
   .agent span{display:none}
   .agent b{font-size:1.1rem}
-  .sold b,.timer b{font-size:1.2rem}
-  .sold span,.timer span{font-size:.75rem}
-  .timer{padding:4px 10px}
-  .soldbtn{padding:0 12px}
   .cats{padding:10px 14px}
   .stage{padding:2px 14px 14px}
   .spot{grid-template-columns:1fr;padding:16px;gap:14px;border-radius:22px}
@@ -362,9 +307,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 @media (hover:none){ .hint{display:none} }
 @media (prefers-reduced-motion: reduce){
   .track,.live::before{animation:none}
-  .stamp.show .stamp-card,.stamp.show .tick *{animation:none!important}
-  .confetti{display:none}
-  #hero img,#hero svg,.pedestal::after,.promo::after,.timer.urgent,#hero.enter,#hero.swap,.info.enter > *{animation:none!important}
+  #hero img,#hero svg,.pedestal::after,.promo::after,#hero.enter,#hero.swap,.info.enter > *{animation:none!important}
   .plan{transition:none}
 }
 </style>
@@ -375,9 +318,6 @@ button{font:inherit;color:inherit;cursor:pointer}
   <div class="agent"><b id="agentName"></b><span id="agentRole"></span></div>
   <span class="live">LIVE</span>
   <div class="spacer"></div>
-  <button class="sold" id="slotBox" aria-label="Ubah bilangan slot promo" title="Tekan untuk ubah bilangan slot"><b id="slotCount">20</b><span id="slotLbl">slot promo tinggal</span></button>
-  <button class="soldbtn" id="soldBtn">−1 slot</button>
-  <button class="timer" id="timerBtn" aria-label="Mula semula timer promo" title="Tekan untuk mula semula"><span>Promo tamat</span><b id="timer">15:00</b></button>
   <div class="tools">
     <button class="icon" id="themeBtn" aria-label="Tukar mod gelap atau cerah"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg></button>
     <button class="icon" id="fsBtn" aria-label="Skrin penuh"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
@@ -405,14 +345,6 @@ button{font:inherit;color:inherit;cursor:pointer}
       <button id="prev" aria-label="Produk sebelum">‹</button>
       <button id="next" aria-label="Produk seterusnya">›</button>
     </div>
-    <div class="stamp" id="stamp" aria-hidden="true">
-      <div class="confetti" id="confetti"></div>
-      <div class="stamp-card">
-        <svg class="tick" viewBox="0 0 52 52"><circle class="ring" cx="26" cy="26" r="24"/><circle cx="26" cy="26" r="24"/><path d="M15 27l7 7 15-16"/></svg>
-        <b>DITEMPAH!</b>
-        <span id="stampSub"></span>
-      </div>
-    </div>
   </section>
 
   <aside class="queue">
@@ -435,9 +367,6 @@ button{font:inherit;color:inherit;cursor:pointer}
       <dt><kbd>↑</kbd> <kbd>↓</kbd> / <kbd>1</kbd>–<kbd>9</kbd></dt><dd>Tukar kategori</dd>
       <dt><kbd>P</kbd></dt><dd>Tukar pelan (7+0 / 5+0 / 3+2)</dd>
       <dt><kbd>C</kbd></dt><dd>Tukar warna produk (jika ada)</dd>
-      <dt><kbd>S</kbd></dt><dd>Tolak 1 slot promo dan tunjuk cop “Ditempah!”</dd>
-      <dt><kbd>R</kbd></dt><dd>Ubah bilangan slot (betulkan salah tekan)</dd>
-      <dt><kbd>T</kbd></dt><dd>Mula semula timer promo</dd>
       <dt><kbd>F</kbd></dt><dd>Skrin penuh</dd>
       <dt><kbd>D</kbd></dt><dd>Tukar mod gelap / cerah</dd>
       <dt><kbd>H</kbd> / <kbd>Esc</kbd></dt><dd>Tutup panduan ini</dd>
@@ -446,8 +375,8 @@ button{font:inherit;color:inherit;cursor:pointer}
 </div>
 
 <script>
-const SETTINGS = {"agentName":"Aina Coway Care","agentRole":"Ejen Sah Coway, Shah Alam","cta":"Klik beg biru untuk tempah","promoMinutes":15,"promoSlots":20,"ticker":["Pemasangan PERCUMA seluruh Semenanjung","Servis berkala setiap 4 bulan oleh Cody","Tiada deposit untuk pakej sewaan terpilih","Semua produk ada dalam beg biru, tekan dan checkout terus","Promo live sahaja \u2013 tamat bila timer habis"]};
-const CATEGORIES = [{"name":"Penapis Air","kind":"water","products":[{"name":"Neo Plus","tag":"Harga promo","plans":[{"label":"7+0 tahun","bulanan":59,"nota":"Sewa 7 tahun, servis berkala termasuk"},{"label":"5+0 tahun","bulanan":59,"nota":"Sewa 5 tahun, habis lebih cepat"},{"label":"3+2 tahun","bulanan":59,"nota":"Tahun 4\u20135 turun ke RM59\/bln"}],"ringkas":"Penapisan RO, 3 suhu, harga berbaloi","spec":["\ud83d\udd25 Panas 1.0 L","\u2744\ufe0f Sejuk 2.3 L","\ud83d\udca7 Suhu bilik 2.5 L","\ud83d\udeb0 Tangki 5.8 L"],"sesuai":"Pasangan atau keluarga 2\u20134 orang","feats":["Penapisan RO (Reverse Osmosis)","Kawalan mudah guna tombol","Mod Eco \u0026 kunci keselamatan"],"promo":"Harga promo ~RM59\/bln","img":"images\/neo-plus.png","warna":[]},{"name":"Neon","tag":"Kompak \u0026 bergaya","plans":[{"label":"7+0 tahun","bulanan":56,"nota":"Sewa 7 tahun, servis berkala termasuk"},{"label":"5+0 tahun","bulanan":54,"nota":"Sewa 5 tahun, habis lebih cepat"},{"label":"3+2 tahun","bulanan":59,"nota":"Tahun 4\u20135 turun ke RM54\/bln"}],"ringkas":"Kompak atas meja, air suhu bilik terus","spec":["\ud83d\udd25 Panas 1.0 L","\u2744\ufe0f Sejuk 1.5 L","\ud83d\udca7 Suhu bilik terus","\ud83d\udeb0 Tangki 2.5 L"],"sesuai":"Individu atau keluarga kecil 1\u20133 orang, dapur ruang terhad","feats":["Penapis Nanotrap\u2122 tangkap virus \u0026 bakteria","Air suhu bilik aliran terus","Ada 5 pilihan warna"],"warna":[{"nama":"Peach Pink","hex":"#F3C9C4","img":"images\/neon.png"},{"nama":"Mint Green","hex":"#BFE0CB","img":"images\/neon-mint.png"},{"nama":"Ciel Blue","hex":"#BCD5EE","img":"images\/neon-blue.png"},{"nama":"Pebble Gray","hex":"#9A9DA3","img":"images\/neon-gray.png"},{"nama":"Porcelain White","hex":"#F2F1EE","img":"images\/neon-white.png"}],"promo":"Tiada deposit","img":"images\/neon.png"},{"name":"Dazzie","tag":"Ultra kompak","plans":[{"label":"7+0 tahun","bulanan":99,"nota":"Sewa 7 tahun, servis berkala termasuk"},{"label":"5+0 tahun","bulanan":79,"nota":"Sewa 5 tahun, habis lebih cepat"},{"label":"3+2 tahun","bulanan":120,"nota":"Tahun 4\u20135 turun ke RM79\/bln"}],"ringkas":"Ultra kompak dengan 4 tetapan air panas","spec":["\ud83d\udd25 Panas segera","\u2744\ufe0f Sejuk 1.0 L","\ud83d\udca7 Suhu bilik terus","\ud83d\udeb0 Tangki 1.0 L"],"sesuai":"Individu atau keluarga kecil yang kerap bancuh minuman panas","feats":["4 tetapan suhu air panas","UV automatik pada paip","Kunci keselamatan kanak-kanak"],"promo":"Pemasangan percuma","img":"images\/dazzie.png","warna":[]},{"name":"Villaem III","tag":"Tangki besar","plans":[{"label":"7+0 tahun","bulanan":69,"nota":"Sewa 7 tahun, servis berkala termasuk"},{"label":"5+0 tahun","bulanan":34,"nota":"Sewa 5 tahun, habis lebih cepat"},{"label":"3+2 tahun","bulanan":104,"nota":"Tahun 4\u20135 turun ke RM34\/bln"}],"ringkas":"Tangki besar dengan UV automatik","spec":["\ud83d\udd25 Panas 2.7 L","\u2744\ufe0f Sejuk 2.6 L","\ud83d\udca7 Suhu bilik 6.1 L","\ud83d\udeb0 Tangki 11.4 L"],"sesuai":"Keluarga 4\u20136 orang yang kerap guna air panas","feats":["Penapisan RO (Reverse Osmosis)","UV automatik","Pilihan isipadu \u0026 suhu, mod kunci"],"promo":"Bulan pertama PERCUMA","img":"images\/villaem-3.png","warna":[]},{"name":"AIS","tag":"Ais segera","plans":[{"label":"7+0 tahun","bulanan":120,"nota":"Sewa 7 tahun, servis berkala termasuk"},{"label":"5+0 tahun","bulanan":120,"nota":"Sewa 5 tahun, habis lebih cepat"},{"label":"3+2 tahun","bulanan":120,"nota":"Tahun 4\u20135 turun ke RM120\/bln"}],"ringkas":"Pembuat ais terbina dalam dengan penapisan RO","spec":["\ud83d\udd25 Panas 1.5 L","\u2744\ufe0f Sejuk 1.8 L","\ud83d\udca7 Suhu bilik 1.8 L","\ud83e\uddca Ais 0.7 kg","\ud83d\udeb0 Tangki 5.1 L"],"sesuai":"Keluarga 2\u20134 orang yang kerap guna ais \u0026 minuman sejuk","feats":["Pembuat ais terbina dalam","Sistem dwi-UV","Kunci ais \u0026 air panas"],"warna":[{"nama":"Pebble Gray","hex":"#3A3D42","img":"images\/ais.png"},{"nama":"Porcelain White","hex":"#F4F2EE","img":"images\/ais-white.png"}],"promo":"Rebat RM300","img":"images\/ais.png"},{"name":"Cinnamon","tag":"Suhu bilik","plans":[{"label":"7+0 tahun","bulanan":39,"nota":"Sewa 7 tahun, servis berkala termasuk"},{"label":"5+0 tahun","bulanan":35,"nota":"Sewa 5 tahun, habis lebih cepat"},{"label":"3+2 tahun","bulanan":49,"nota":"Tahun 4\u20135 turun ke RM32\/bln"}],"ringkas":"Kompak, khas untuk air suhu bilik","spec":["\ud83d\udca7 Suhu bilik 5.0 L","\ud83d\udeb0 Tangki 5.0 L"],"sesuai":"Individu atau keluarga kecil 1\u20133 orang yang perlukan air suhu bilik sahaja","feats":["Penapisan RO (Reverse Osmosis)","Booster pump bantu aliran bila tekanan air rendah","Reka bentuk kompak"],"promo":"Tiada deposit","img":"images\/cinnamon.png","warna":[]},{"name":"Glaze","tag":"Air sejuk+","plans":[{"label":"7+0 tahun","bulanan":79,"nota":"Sewa 7 tahun, servis berkala termasuk"},{"label":"5+0 tahun","bulanan":72,"nota":"Sewa 5 tahun, habis lebih cepat"},{"label":"3+2 tahun","bulanan":92,"nota":"Tahun 4\u20135 turun ke RM69\/bln"}],"ringkas":"Bekalan air sejuk lebih berterusan","spec":["\ud83d\udd25 Panas 1.0 L","\u2744\ufe0f Sejuk 2.5 L","\ud83d\udca7 Suhu bilik 2.5 L","\ud83d\udeb0 Tangki 6.0 L"],"sesuai":"Keluarga 2\u20134 orang yang kerap minum air sejuk","feats":["Penapisan RO (Reverse Osmosis)","Cold Water+ untuk air sejuk berterusan","Air panas, sejuk \u0026 suhu bilik"],"promo":"Pemasangan percuma","img":"images\/glaze.png","warna":[]},{"name":"Ombak","tag":"Tangki besar","plans":[{"label":"7+0 tahun","bulanan":99,"nota":"Sewa 7 tahun, servis berkala termasuk"},{"label":"5+0 tahun","bulanan":89,"nota":"Sewa 5 tahun, habis lebih cepat"},{"label":"3+2 tahun","bulanan":115,"nota":"Tahun 4\u20135 turun ke RM85\/bln"}],"ringkas":"Tangki suhu bilik besar untuk keluarga ramai","spec":["\ud83d\udd25 Panas 3.4 L","\u2744\ufe0f Sejuk 2.3 L","\ud83d\udca7 Suhu bilik 7.8 L","\ud83d\udeb0 Tangki 13.5 L"],"sesuai":"Keluarga 4\u20136 orang yang banyak minum air suhu bilik \u0026 panas","feats":["Penapisan RO (Reverse Osmosis)","Tangki suhu bilik 7.8 L","Skrin paparan suhu \u0026 isipadu"],"promo":"Bulan pertama PERCUMA","img":"images\/ombak.png","warna":[]},{"name":"Core Slim","tag":"Berdiri langsing","plans":[{"label":"7+0 tahun","bulanan":89,"nota":"Sewa 7 tahun, servis berkala termasuk"},{"label":"5+0 tahun","bulanan":82,"nota":"Sewa 5 tahun, habis lebih cepat"},{"label":"3+2 tahun","bulanan":105,"nota":"Tahun 4\u20135 turun ke RM79\/bln"}],"ringkas":"Unit berdiri yang langsing, jimat ruang lantai","spec":["\ud83d\udd25 Panas 3.0 L","\u2744\ufe0f Sejuk 3.5 L","\ud83d\udca7 Suhu bilik 5.5 L","\ud83d\udeb0 Tangki 12.0 L"],"sesuai":"Keluarga 3\u20135 orang yang mahu unit berdiri tapi ruang terhad","feats":["Penapis Nanotrap\u2122","Reka bentuk berdiri yang langsing","Sterilisasi UV"],"promo":"Tiada deposit","img":"images\/core-slim.png","warna":[]},{"name":"Core Plus","tag":"Kapasiti terbesar","plans":[{"label":"7+0 tahun","bulanan":129,"nota":"Sewa 7 tahun, servis berkala termasuk"},{"label":"5+0 tahun","bulanan":119,"nota":"Sewa 5 tahun, habis lebih cepat"},{"label":"3+2 tahun","bulanan":145,"nota":"Tahun 4\u20135 turun ke RM109\/bln"}],"ringkas":"Kapasiti 21.1 L untuk penggunaan tinggi","spec":["\ud83d\udd25 Panas 3.6 L","\u2744\ufe0f Sejuk 7.1 L","\ud83d\udca7 Suhu bilik 10.4 L","\ud83d\udeb0 Tangki 21.1 L"],"sesuai":"Keluarga besar 5\u20138 orang atau pejabat kecil\/sederhana","feats":["Penapisan RO (Reverse Osmosis)","Tangki besar dengan UV","Unit berdiri, sesuai pejabat"],"promo":"Rebat RM300","img":"images\/core-plus.png","warna":[]},{"name":"Lucy Plus","tag":"Ais","plans":[{"label":"7+0 tahun","bulanan":139,"nota":"Sewa 7 tahun, servis berkala termasuk"},{"label":"5+0 tahun","bulanan":129,"nota":"Sewa 5 tahun, habis lebih cepat"},{"label":"3+2 tahun","bulanan":155,"nota":"Tahun 4\u20135 turun ke RM119\/bln"}],"ringkas":"Pembuat ais tanpa perlu sentuh ais","spec":["\ud83d\udd25 Panas 1.5 L","\u2744\ufe0f Sejuk 2.5 L","\ud83d\udca7 Suhu bilik 3.5 L","\ud83e\uddca Ais 1.0 kg","\ud83d\udeb0 Tangki 7.5 L"],"sesuai":"Keluarga 2\u20134 orang yang kerap guna ais","feats":["Penapisan RO (Reverse Osmosis)","Pembuat ais terbina dalam","Ais keluar tanpa disentuh tangan"],"promo":"Pemasangan percuma","img":"images\/lucy-plus.png","warna":[]}]},{"name":"Penapis Udara","kind":"air","products":[{"name":"Atrium","tag":"Ruang besar","plans":[{"label":"7+0 tahun","bulanan":89,"nota":"Sewa 7 tahun, servis berkala termasuk"},{"label":"5+0 tahun","bulanan":83,"nota":"Sewa 5 tahun, habis lebih cepat"},{"label":"3+2 tahun","bulanan":103,"nota":"Tahun 4\u20135 turun ke RM73\/bln"}],"ringkas":"Penapis udara terbaru untuk ruang besar","sesuai":"Ruang tamu besar dan rumah konsep terbuka","feats":["Penapisan 3 peringkat dua sisi","Model baharu 2026","3 pilihan warna"],"warna":[{"nama":"Sand Beige","hex":"#BBA99A","img":"images\/atrium.png"},{"nama":"Porcelain White","hex":"#EFEDE9","img":"images\/atrium-white.png"},{"nama":"Pebble Gray","hex":"#8E9196","img":"images\/atrium-gray.png"}],"promo":"Penapis ganti percuma","img":"images\/atrium.png"},{"name":"Lombok 3","tag":"Plasma \u0026 ion","plans":[{"label":"7+0 tahun","bulanan":59,"nota":"Sewa 7 tahun, servis berkala termasuk"},{"label":"5+0 tahun","bulanan":53,"nota":"Sewa 5 tahun, habis lebih cepat"},{"label":"3+2 tahun","bulanan":73,"nota":"Tahun 4\u20135 turun ke RM43\/bln"}],"ringkas":"Penapis udara dengan plasma \u0026 ioniser","sesuai":"Bilik tidur dan ruang sederhana","feats":["Penunjuk habuk halus PM2.5 \u0026 bau","RBD Plasma \u0026 ioniser","Kunci kanak-kanak"],"promo":"Bulan pertama PERCUMA","img":"images\/lombok-3.png","warna":[]},{"name":"Tuba","tag":"Liputan luas","plans":[{"label":"7+0 tahun","bulanan":45,"nota":"Sewa 7 tahun, servis berkala termasuk"},{"label":"5+0 tahun","bulanan":39,"nota":"Sewa 5 tahun, habis lebih cepat"},{"label":"3+2 tahun","bulanan":59,"nota":"Tahun 4\u20135 turun ke RM29\/bln"}],"ringkas":"Penapis udara menegak berliputan luas","sesuai":"Ruang tamu dan pejabat","feats":["Liputan sehingga 93 m\u00b2","Reka bentuk menegak jimat ruang","Sesuai rumah \u0026 pejabat"],"promo":"Tiada deposit","img":"images\/tuba.png","warna":[]},{"name":"Noble","tag":"Premium","plans":[{"label":"7+0 tahun","bulanan":119,"nota":"Sewa 7 tahun, servis berkala termasuk"},{"label":"5+0 tahun","bulanan":113,"nota":"Sewa 5 tahun, habis lebih cepat"},{"label":"3+2 tahun","bulanan":133,"nota":"Tahun 4\u20135 turun ke RM103\/bln"}],"ringkas":"Penapis udara premium yang elegan","sesuai":"Ruang tamu dan bilik utama","feats":["Liputan sehingga 66 m\u00b2","Reka bentuk elegan","Penapisan habuk halus"],"promo":"Rebat RM250","img":"images\/noble.png","warna":[]},{"name":"Storm 2","tag":"Aliran kuat","plans":[{"label":"7+0 tahun","bulanan":99,"nota":"Sewa 7 tahun, servis berkala termasuk"},{"label":"5+0 tahun","bulanan":93,"nota":"Sewa 5 tahun, habis lebih cepat"},{"label":"3+2 tahun","bulanan":113,"nota":"Tahun 4\u20135 turun ke RM83\/bln"}],"ringkas":"Aliran udara kuat sehingga 10 meter","sesuai":"Ruang panjang dan rumah teres","feats":["Penapis HEPA tembaga","Jimat tenaga 35%","Pra-penapis boleh dibasuh"],"promo":"Pemasangan percuma","img":"images\/storm-2.png","warna":[]},{"name":"Studio","tag":"Senyap","plans":[{"label":"7+0 tahun","bulanan":69,"nota":"Sewa 7 tahun, servis berkala termasuk"},{"label":"5+0 tahun","bulanan":63,"nota":"Sewa 5 tahun, habis lebih cepat"},{"label":"3+2 tahun","bulanan":83,"nota":"Tahun 4\u20135 turun ke RM53\/bln"}],"ringkas":"Penapis udara senyap dengan Hypervortex","sesuai":"Bilik tidur dan ruang kerja","feats":["Liputan sehingga 76 m\u00b2","Senyap serendah 21.6 dB","Teknologi Hypervortex"],"promo":"Tiada deposit","img":"images\/studio.png","warna":[]}]},{"name":"Tilam","kind":"mattress","products":[{"name":"Prime Lite","tag":"Bajet","plans":[{"label":"7+0 tahun","bulanan":79,"nota":"Sewa 7 tahun, servis berkala termasuk"},{"label":"5+0 tahun","bulanan":73,"nota":"Sewa 5 tahun, habis lebih cepat"},{"label":"3+2 tahun","bulanan":93,"nota":"Tahun 4\u20135 turun ke RM63\/bln"}],"ringkas":"Selesa dan menyokong pada harga mampu milik","sesuai":"Pasangan muda dan bilik tetamu","feats":["Servis penjagaan tilam 7 langkah","Topper boleh tukar percuma","Sterilisasi UV"],"promo":"Tiada deposit","img":"images\/prime-lite.png","warna":[]},{"name":"Prime 2","tag":"Paling laris","plans":[{"label":"7+0 tahun","bulanan":129,"nota":"Sewa 7 tahun, servis berkala termasuk"},{"label":"5+0 tahun","bulanan":123,"nota":"Sewa 5 tahun, habis lebih cepat"},{"label":"3+2 tahun","bulanan":143,"nota":"Tahun 4\u20135 turun ke RM113\/bln"}],"ringkas":"Tilam premium dengan servis pembersihan berkala","sesuai":"Keluarga yang utamakan kebersihan tilam","feats":["Pembersihan berkala oleh juruteknik","Penghalau hama \u0026 sterilisasi UV","Sokongan badan yang selesa"],"promo":"Bantal percuma x2","img":"images\/prime-2.png","warna":[]},{"name":"Smart Mattress","tag":"Pintar","plans":[{"label":"7+0 tahun","bulanan":149,"nota":"Sewa 7 tahun, servis berkala termasuk"},{"label":"5+0 tahun","bulanan":143,"nota":"Sewa 5 tahun, habis lebih cepat"},{"label":"3+2 tahun","bulanan":163,"nota":"Tahun 4\u20135 turun ke RM133\/bln"}],"ringkas":"Tilam pintar, kekerasan boleh laras","sesuai":"Pasangan yang suka kekerasan tilam berbeza","feats":["9 tahap kekerasan dengan sel udara","Fungsi regangan badan","Kawalan alat kawalan jauh"],"promo":"Rebat RM400","img":"images\/smart.png","warna":[]}]},{"name":"Kerusi Urut","kind":"massage","products":[{"name":"Kerusi Urut Coway","tag":"Urut seluruh badan","plans":[{"label":"7+0 tahun","bulanan":199,"nota":"Sewa 7 tahun, servis berkala termasuk"},{"label":"5+0 tahun","bulanan":189,"nota":"Sewa 5 tahun, habis lebih cepat"},{"label":"3+2 tahun","bulanan":219,"nota":"Tahun 4\u20135 turun ke RM179\/bln"}],"ringkas":"Urutan seluruh badan di rumah","sesuai":"Yang selalu penat dan sakit badan","feats":["Urutan kepala hingga kaki","Pelbagai mod urutan","Servis berkala termasuk"],"promo":"Pemasangan percuma","img":"images\/kerusi-urut.png","warna":[]},{"name":"BEREX Mine","tag":"Kompak","plans":[{"label":"7+0 tahun","bulanan":159,"nota":"Sewa 7 tahun, servis berkala termasuk"},{"label":"5+0 tahun","bulanan":149,"nota":"Sewa 5 tahun, habis lebih cepat"},{"label":"3+2 tahun","bulanan":179,"nota":"Tahun 4\u20135 turun ke RM139\/bln"}],"ringkas":"Kerusi urut kompak, mudah dialih","sesuai":"Rumah dan kondo yang ruangnya terhad","feats":["12 mod urutan","Urutan lutut ke betis boleh tukar","Roda tersembunyi, mudah dialih"],"promo":"Tiada deposit","img":"images\/mine.png","warna":[]},{"name":"BEREX Senno","tag":"Pintar","plans":[{"label":"7+0 tahun","bulanan":229,"nota":"Sewa 7 tahun, servis berkala termasuk"},{"label":"5+0 tahun","bulanan":219,"nota":"Sewa 5 tahun, habis lebih cepat"},{"label":"3+2 tahun","bulanan":249,"nota":"Tahun 4\u20135 turun ke RM209\/bln"}],"ringkas":"Kerusi urut pintar dengan haba","sesuai":"Yang kerap sakit pinggang","feats":["Terapi haba di pinggang","Kerusi urut pintar","Skrin kawalan mudah"],"promo":"Bulan pertama PERCUMA","img":"images\/senno.png","warna":[]},{"name":"BEREX Senno Plus","tag":"Premium","plans":[{"label":"7+0 tahun","bulanan":269,"nota":"Sewa 7 tahun, servis berkala termasuk"},{"label":"5+0 tahun","bulanan":259,"nota":"Sewa 5 tahun, habis lebih cepat"},{"label":"3+2 tahun","bulanan":289,"nota":"Tahun 4\u20135 turun ke RM249\/bln"}],"ringkas":"Haba di pinggang dan betis","sesuai":"Yang mahu urutan premium seluruh badan","feats":["Terapi haba pinggang \u0026 betis","Kerusi urut pintar","Skrin kawalan mudah"],"promo":"Rebat RM500","img":"images\/senno-plus.png","warna":[]},{"name":"BEREX Pebble","tag":"Urutan lembut","plans":[{"label":"7+0 tahun","bulanan":129,"nota":"Sewa 7 tahun, servis berkala termasuk"},{"label":"5+0 tahun","bulanan":119,"nota":"Sewa 5 tahun, habis lebih cepat"},{"label":"3+2 tahun","bulanan":149,"nota":"Tahun 4\u20135 turun ke RM109\/bln"}],"ringkas":"Kerusi urut bentuk telur yang bergaya","sesuai":"Yang suka urutan ringan dan reka bentuk cantik","feats":["11 mod urutan","Urutan 3D boleh laras","Reka bentuk hiasan ruang tamu"],"promo":"Tiada deposit","img":"images\/pebble.png","warna":[]},{"name":"BEREX Massage Bed","tag":"Katil urut","plans":[{"label":"7+0 tahun","bulanan":179,"nota":"Sewa 7 tahun, servis berkala termasuk"},{"label":"5+0 tahun","bulanan":169,"nota":"Sewa 5 tahun, habis lebih cepat"},{"label":"3+2 tahun","bulanan":199,"nota":"Tahun 4\u20135 turun ke RM159\/bln"}],"ringkas":"Katil urut dengan roller panas","sesuai":"Yang mahu urutan sambil berbaring","feats":["30 mod \u0026 12 tahap kekuatan","Urutan haba 3D","Muzik melalui Bluetooth"],"promo":"Pemasangan percuma","img":"images\/berex-bed.png","warna":[]}]},{"name":"Aircond","kind":"aircond","products":[{"name":"Aircond F Series","tag":"5 bintang tenaga","plans":[{"label":"7+0 tahun","bulanan":119,"nota":"Sewa 7 tahun, servis berkala termasuk"},{"label":"5+0 tahun","bulanan":109,"nota":"Sewa 5 tahun, habis lebih cepat"},{"label":"3+2 tahun","bulanan":139,"nota":"Tahun 4\u20135 turun ke RM99\/bln"}],"ringkas":"Sejuk dan udara bersih sekali gus","sesuai":"Bilik tidur dan ruang tamu","feats":["Penapisan 5 langkah","Sistem cuci sendiri","Penarafan 5 bintang Suruhanjaya Tenaga"],"promo":"Pemasangan percuma","img":"images\/f-series.png","warna":[]},{"name":"Aircond P Series","tag":"2.0 HP","plans":[{"label":"7+0 tahun","bulanan":139,"nota":"Sewa 7 tahun, servis berkala termasuk"},{"label":"5+0 tahun","bulanan":129,"nota":"Sewa 5 tahun, habis lebih cepat"},{"label":"3+2 tahun","bulanan":159,"nota":"Tahun 4\u20135 turun ke RM119\/bln"}],"ringkas":"Kuasa besar, bil elektrik rendah","sesuai":"Ruang tamu dan bilik besar","feats":["2.0 HP, penarafan tenaga 5 bintang","Sterilisasi UVC \u0026 ioniser","Kondenser Golden Fin tahan karat"],"promo":"Tiada deposit","img":"images\/p-series.png","warna":[]}]}];
+const SETTINGS = {"agentName":"Aina Coway Care","agentRole":"Ejen Sah Coway, Shah Alam","cta":"Klik beg biru untuk tempah","ticker":["Pemasangan PERCUMA seluruh Semenanjung","Servis berkala setiap 4 bulan oleh Cody","Tiada deposit untuk pakej sewaan terpilih","Semua produk ada dalam beg biru, tekan dan checkout terus","Promo eksklusif untuk penonton live sahaja"]};
+const CATEGORIES = [{"name":"Penapis Air","kind":"water","products":[{"name":"Neo Plus","tag":"Harga promo","plans":[{"label":"7+0 tahun","bulanan":59,"nota":"Sewa 7 tahun, servis berkala termasuk"},{"label":"5+0 tahun","bulanan":59,"nota":"Sewa 5 tahun, habis lebih cepat"},{"label":"3+2 tahun","bulanan":59,"nota":"Tahun 4\u20135 turun ke RM59\/bln"}],"ringkas":"Penapisan RO, 3 suhu, harga berbaloi","spec":["\ud83d\udd25 Panas 1.0 L","\u2744\ufe0f Sejuk 2.3 L","\ud83d\udca7 Suhu bilik 2.5 L","\ud83d\udeb0 Tangki 5.8 L"],"sesuai":"Pasangan atau keluarga 2\u20134 orang","feats":["Penapisan RO (Reverse Osmosis)","Kawalan mudah guna tombol","Mod Eco \u0026 kunci keselamatan"],"promo":"Harga promo ~RM59\/bln","img":"images\/neo-plus.png","warna":[]},{"name":"Neon","tag":"Kompak \u0026 bergaya","plans":[{"label":"7+0 tahun","bulanan":56,"nota":"Sewa 7 tahun, servis berkala termasuk"},{"label":"5+0 tahun","bulanan":54,"nota":"Sewa 5 tahun, habis lebih cepat"},{"label":"3+2 tahun","bulanan":59,"nota":"Tahun 4\u20135 turun ke RM54\/bln"}],"ringkas":"Kompak atas meja, air suhu bilik terus","spec":["\ud83d\udd25 Panas 1.0 L","\u2744\ufe0f Sejuk 1.5 L","\ud83d\udca7 Suhu bilik terus","\ud83d\udeb0 Tangki 2.5 L"],"sesuai":"Individu atau keluarga kecil 1\u20133 orang, dapur ruang terhad","feats":["Penapis Nanotrap\u2122 tangkap virus \u0026 bakteria","Air suhu bilik aliran terus","Ada 5 pilihan warna"],"warna":[{"nama":"Peach Pink","hex":"#F3C9C4","img":"images\/neon.png"},{"nama":"Mint Green","hex":"#BFE0CB","img":"images\/neon-mint.png"},{"nama":"Ciel Blue","hex":"#BCD5EE","img":"images\/neon-blue.png"},{"nama":"Pebble Gray","hex":"#9A9DA3","img":"images\/neon-gray.png"},{"nama":"Porcelain White","hex":"#F2F1EE","img":"images\/neon-white.png"}],"promo":"Tiada deposit","img":"images\/neon.png"},{"name":"Dazzie","tag":"Ultra kompak","plans":[{"label":"7+0 tahun","bulanan":99,"nota":"Sewa 7 tahun, servis berkala termasuk"},{"label":"5+0 tahun","bulanan":79,"nota":"Sewa 5 tahun, habis lebih cepat"},{"label":"3+2 tahun","bulanan":120,"nota":"Tahun 4\u20135 turun ke RM79\/bln"}],"ringkas":"Ultra kompak dengan 4 tetapan air panas","spec":["\ud83d\udd25 Panas segera","\u2744\ufe0f Sejuk 1.0 L","\ud83d\udca7 Suhu bilik terus","\ud83d\udeb0 Tangki 1.0 L"],"sesuai":"Individu atau keluarga kecil yang kerap bancuh minuman panas","feats":["4 tetapan suhu air panas","UV automatik pada paip","Kunci keselamatan kanak-kanak"],"promo":"Pemasangan percuma","img":"images\/dazzie.png","warna":[]},{"name":"Villaem III","tag":"Tangki besar","plans":[{"label":"7+0 tahun","bulanan":69,"nota":"Sewa 7 tahun, servis berkala termasuk"},{"label":"5+0 tahun","bulanan":34,"nota":"Sewa 5 tahun, habis lebih cepat"},{"label":"3+2 tahun","bulanan":104,"nota":"Tahun 4\u20135 turun ke RM34\/bln"}],"ringkas":"Tangki besar dengan UV automatik","spec":["\ud83d\udd25 Panas 2.7 L","\u2744\ufe0f Sejuk 2.6 L","\ud83d\udca7 Suhu bilik 6.1 L","\ud83d\udeb0 Tangki 11.4 L"],"sesuai":"Keluarga 4\u20136 orang yang kerap guna air panas","feats":["Penapisan RO (Reverse Osmosis)","UV automatik","Pilihan isipadu \u0026 suhu, mod kunci"],"promo":"Bulan pertama PERCUMA","img":"images\/villaem-3.png","warna":[]},{"name":"AIS","tag":"Ais segera","plans":[{"label":"7+0 tahun","bulanan":120,"nota":"Sewa 7 tahun, servis berkala termasuk"},{"label":"5+0 tahun","bulanan":120,"nota":"Sewa 5 tahun, habis lebih cepat"},{"label":"3+2 tahun","bulanan":120,"nota":"Tahun 4\u20135 turun ke RM120\/bln"}],"ringkas":"Pembuat ais terbina dalam dengan penapisan RO","spec":["\ud83d\udd25 Panas 1.5 L","\u2744\ufe0f Sejuk 1.8 L","\ud83d\udca7 Suhu bilik 1.8 L","\ud83e\uddca Ais 0.7 kg","\ud83d\udeb0 Tangki 5.1 L"],"sesuai":"Keluarga 2\u20134 orang yang kerap guna ais \u0026 minuman sejuk","feats":["Pembuat ais terbina dalam","Sistem dwi-UV","Kunci ais \u0026 air panas"],"warna":[{"nama":"Pebble Gray","hex":"#3A3D42","img":"images\/ais.png"},{"nama":"Porcelain White","hex":"#F4F2EE","img":"images\/ais-white.png"}],"promo":"Rebat RM300","img":"images\/ais.png"},{"name":"Cinnamon","tag":"Suhu bilik","plans":[{"label":"7+0 tahun","bulanan":39,"nota":"Sewa 7 tahun, servis berkala termasuk"},{"label":"5+0 tahun","bulanan":35,"nota":"Sewa 5 tahun, habis lebih cepat"},{"label":"3+2 tahun","bulanan":49,"nota":"Tahun 4\u20135 turun ke RM32\/bln"}],"ringkas":"Kompak, khas untuk air suhu bilik","spec":["\ud83d\udca7 Suhu bilik 5.0 L","\ud83d\udeb0 Tangki 5.0 L"],"sesuai":"Individu atau keluarga kecil 1\u20133 orang yang perlukan air suhu bilik sahaja","feats":["Penapisan RO (Reverse Osmosis)","Booster pump bantu aliran bila tekanan air rendah","Reka bentuk kompak"],"promo":"Tiada deposit","img":"images\/cinnamon.png","warna":[]},{"name":"Glaze","tag":"Air sejuk+","plans":[{"label":"7+0 tahun","bulanan":79,"nota":"Sewa 7 tahun, servis berkala termasuk"},{"label":"5+0 tahun","bulanan":72,"nota":"Sewa 5 tahun, habis lebih cepat"},{"label":"3+2 tahun","bulanan":92,"nota":"Tahun 4\u20135 turun ke RM69\/bln"}],"ringkas":"Bekalan air sejuk lebih berterusan","spec":["\ud83d\udd25 Panas 1.0 L","\u2744\ufe0f Sejuk 2.5 L","\ud83d\udca7 Suhu bilik 2.5 L","\ud83d\udeb0 Tangki 6.0 L"],"sesuai":"Keluarga 2\u20134 orang yang kerap minum air sejuk","feats":["Penapisan RO (Reverse Osmosis)","Cold Water+ untuk air sejuk berterusan","Air panas, sejuk \u0026 suhu bilik"],"promo":"Pemasangan percuma","img":"images\/glaze.png","warna":[]},{"name":"Ombak","tag":"Tangki besar","plans":[{"label":"7+0 tahun","bulanan":99,"nota":"Sewa 7 tahun, servis berkala termasuk"},{"label":"5+0 tahun","bulanan":89,"nota":"Sewa 5 tahun, habis lebih cepat"},{"label":"3+2 tahun","bulanan":115,"nota":"Tahun 4\u20135 turun ke RM85\/bln"}],"ringkas":"Tangki suhu bilik besar untuk keluarga ramai","spec":["\ud83d\udd25 Panas 3.4 L","\u2744\ufe0f Sejuk 2.3 L","\ud83d\udca7 Suhu bilik 7.8 L","\ud83d\udeb0 Tangki 13.5 L"],"sesuai":"Keluarga 4\u20136 orang yang banyak minum air suhu bilik \u0026 panas","feats":["Penapisan RO (Reverse Osmosis)","Tangki suhu bilik 7.8 L","Skrin paparan suhu \u0026 isipadu"],"promo":"Bulan pertama PERCUMA","img":"images\/ombak.png","warna":[]},{"name":"Core Slim","tag":"Berdiri langsing","plans":[{"label":"7+0 tahun","bulanan":89,"nota":"Sewa 7 tahun, servis berkala termasuk"},{"label":"5+0 tahun","bulanan":82,"nota":"Sewa 5 tahun, habis lebih cepat"},{"label":"3+2 tahun","bulanan":105,"nota":"Tahun 4\u20135 turun ke RM79\/bln"}],"ringkas":"Unit berdiri yang langsing, jimat ruang lantai","spec":["\ud83d\udd25 Panas 3.0 L","\u2744\ufe0f Sejuk 3.5 L","\ud83d\udca7 Suhu bilik 5.5 L","\ud83d\udeb0 Tangki 12.0 L"],"sesuai":"Keluarga 3\u20135 orang yang mahu unit berdiri tapi ruang terhad","feats":["Penapis Nanotrap\u2122","Reka bentuk berdiri yang langsing","Sterilisasi UV"],"promo":"Tiada deposit","img":"images\/core-slim.png","warna":[]},{"name":"Core Plus","tag":"Kapasiti terbesar","plans":[{"label":"7+0 tahun","bulanan":129,"nota":"Sewa 7 tahun, servis berkala termasuk"},{"label":"5+0 tahun","bulanan":119,"nota":"Sewa 5 tahun, habis lebih cepat"},{"label":"3+2 tahun","bulanan":145,"nota":"Tahun 4\u20135 turun ke RM109\/bln"}],"ringkas":"Kapasiti 21.1 L untuk penggunaan tinggi","spec":["\ud83d\udd25 Panas 3.6 L","\u2744\ufe0f Sejuk 7.1 L","\ud83d\udca7 Suhu bilik 10.4 L","\ud83d\udeb0 Tangki 21.1 L"],"sesuai":"Keluarga besar 5\u20138 orang atau pejabat kecil\/sederhana","feats":["Penapisan RO (Reverse Osmosis)","Tangki besar dengan UV","Unit berdiri, sesuai pejabat"],"promo":"Rebat RM300","img":"images\/core-plus.png","warna":[]},{"name":"Lucy Plus","tag":"Ais","plans":[{"label":"7+0 tahun","bulanan":139,"nota":"Sewa 7 tahun, servis berkala termasuk"},{"label":"5+0 tahun","bulanan":129,"nota":"Sewa 5 tahun, habis lebih cepat"},{"label":"3+2 tahun","bulanan":155,"nota":"Tahun 4\u20135 turun ke RM119\/bln"}],"ringkas":"Pembuat ais tanpa perlu sentuh ais","spec":["\ud83d\udd25 Panas 1.5 L","\u2744\ufe0f Sejuk 2.5 L","\ud83d\udca7 Suhu bilik 3.5 L","\ud83e\uddca Ais 1.0 kg","\ud83d\udeb0 Tangki 7.5 L"],"sesuai":"Keluarga 2\u20134 orang yang kerap guna ais","feats":["Penapisan RO (Reverse Osmosis)","Pembuat ais terbina dalam","Ais keluar tanpa disentuh tangan"],"promo":"Pemasangan percuma","img":"images\/lucy-plus.png","warna":[]}]},{"name":"Penapis Udara","kind":"air","products":[{"name":"Atrium","tag":"Ruang besar","plans":[{"label":"7+0 tahun","bulanan":89,"nota":"Sewa 7 tahun, servis berkala termasuk"},{"label":"5+0 tahun","bulanan":83,"nota":"Sewa 5 tahun, habis lebih cepat"},{"label":"3+2 tahun","bulanan":103,"nota":"Tahun 4\u20135 turun ke RM73\/bln"}],"ringkas":"Penapis udara terbaru untuk ruang besar","sesuai":"Ruang tamu besar dan rumah konsep terbuka","feats":["Penapisan 3 peringkat dua sisi","Model baharu 2026","3 pilihan warna"],"warna":[{"nama":"Sand Beige","hex":"#BBA99A","img":"images\/atrium.png"},{"nama":"Porcelain White","hex":"#EFEDE9","img":"images\/atrium-white.png"},{"nama":"Pebble Gray","hex":"#8E9196","img":"images\/atrium-gray.png"}],"promo":"Penapis ganti percuma","img":"images\/atrium.png"},{"name":"Lombok 3","tag":"Plasma \u0026 ion","plans":[{"label":"7+0 tahun","bulanan":59,"nota":"Sewa 7 tahun, servis berkala termasuk"},{"label":"5+0 tahun","bulanan":53,"nota":"Sewa 5 tahun, habis lebih cepat"},{"label":"3+2 tahun","bulanan":73,"nota":"Tahun 4\u20135 turun ke RM43\/bln"}],"ringkas":"Penapis udara dengan plasma \u0026 ioniser","sesuai":"Bilik tidur dan ruang sederhana","feats":["Penunjuk habuk halus PM2.5 \u0026 bau","RBD Plasma \u0026 ioniser","Kunci kanak-kanak"],"promo":"Bulan pertama PERCUMA","img":"images\/lombok-3.png","warna":[]},{"name":"Tuba","tag":"Liputan luas","plans":[{"label":"7+0 tahun","bulanan":45,"nota":"Sewa 7 tahun, servis berkala termasuk"},{"label":"5+0 tahun","bulanan":39,"nota":"Sewa 5 tahun, habis lebih cepat"},{"label":"3+2 tahun","bulanan":59,"nota":"Tahun 4\u20135 turun ke RM29\/bln"}],"ringkas":"Penapis udara menegak berliputan luas","sesuai":"Ruang tamu dan pejabat","feats":["Liputan sehingga 93 m\u00b2","Reka bentuk menegak jimat ruang","Sesuai rumah \u0026 pejabat"],"promo":"Tiada deposit","img":"images\/tuba.png","warna":[]},{"name":"Noble","tag":"Premium","plans":[{"label":"7+0 tahun","bulanan":119,"nota":"Sewa 7 tahun, servis berkala termasuk"},{"label":"5+0 tahun","bulanan":113,"nota":"Sewa 5 tahun, habis lebih cepat"},{"label":"3+2 tahun","bulanan":133,"nota":"Tahun 4\u20135 turun ke RM103\/bln"}],"ringkas":"Penapis udara premium yang elegan","sesuai":"Ruang tamu dan bilik utama","feats":["Liputan sehingga 66 m\u00b2","Reka bentuk elegan","Penapisan habuk halus"],"promo":"Rebat RM250","img":"images\/noble.png","warna":[]},{"name":"Storm 2","tag":"Aliran kuat","plans":[{"label":"7+0 tahun","bulanan":99,"nota":"Sewa 7 tahun, servis berkala termasuk"},{"label":"5+0 tahun","bulanan":93,"nota":"Sewa 5 tahun, habis lebih cepat"},{"label":"3+2 tahun","bulanan":113,"nota":"Tahun 4\u20135 turun ke RM83\/bln"}],"ringkas":"Aliran udara kuat sehingga 10 meter","sesuai":"Ruang panjang dan rumah teres","feats":["Penapis HEPA tembaga","Jimat tenaga 35%","Pra-penapis boleh dibasuh"],"promo":"Pemasangan percuma","img":"images\/storm-2.png","warna":[]},{"name":"Studio","tag":"Senyap","plans":[{"label":"7+0 tahun","bulanan":69,"nota":"Sewa 7 tahun, servis berkala termasuk"},{"label":"5+0 tahun","bulanan":63,"nota":"Sewa 5 tahun, habis lebih cepat"},{"label":"3+2 tahun","bulanan":83,"nota":"Tahun 4\u20135 turun ke RM53\/bln"}],"ringkas":"Penapis udara senyap dengan Hypervortex","sesuai":"Bilik tidur dan ruang kerja","feats":["Liputan sehingga 76 m\u00b2","Senyap serendah 21.6 dB","Teknologi Hypervortex"],"promo":"Tiada deposit","img":"images\/studio.png","warna":[]}]}];
 </script>
 
 <script>
@@ -473,23 +402,11 @@ const ART = {
 };
 
 const $ = id => document.getElementById(id);
-let cat = 0, idx = 0, plan = 0, colorIdx = 0, slots = SETTINGS.promoSlots, endAt = 0;
+let cat = 0, idx = 0, plan = 0, colorIdx = 0;
 const pick = p => p.plans[Math.min(plan, p.plans.length-1)];
 const rm = n => "RM" + n.toLocaleString("en-MY");
 const imgSrc = p => p.img || "";
 
-/* Simpan slot & timer dalam browser supaya tak hilang bila refresh */
-const STORE_KEY = "live-display-state";
-function loadState(){
-  try{
-    const s = JSON.parse(localStorage.getItem(STORE_KEY) || "null");
-    if(s && Number.isInteger(s.slots) && s.slots >= 0) slots = s.slots;
-    if(s && typeof s.endAt === "number" && s.endAt > 0) endAt = s.endAt;
-  }catch(e){}
-}
-function saveState(){
-  try{ localStorage.setItem(STORE_KEY, JSON.stringify({ slots, endAt })); }catch(e){}
-}
 const KIND_ICON = { water:"💧", air:"🌬️", mattress:"🛏️", massage:"💆", aircond:"❄️", bidet:"🚽", shower:"🚿" };
 const SPEC_KIND = [["🔥","hot"],["❄","cold"],["🧊","ice"],["🚰","tank"]];
 const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -606,40 +523,6 @@ function toggleTheme(){
   const dark=root.dataset.theme ? root.dataset.theme==="dark" : matchMedia("(prefers-color-scheme: dark)").matches;
   root.dataset.theme = dark?"light":"dark";
 }
-function renderSlots(){
-  const habis = slots<=0;
-  $("slotCount").textContent = habis ? "Habis" : slots;
-  $("slotLbl").textContent = habis ? "slot promo" : "slot promo tinggal";
-  $("slotBox").classList.toggle("low", slots<=5);
-  $("soldBtn").disabled = habis;
-  saveState();
-}
-function editSlots(){
-  const v = prompt("Berapa slot promo tinggal?", Math.max(slots,0));
-  if(v===null) return;
-  const n = parseInt(v,10);
-  if(!isNaN(n) && n>=0){ slots=n; renderSlots(); }
-}
-function stampSold(){
-  if(slots<=0) return;
-  slots--; renderSlots();
-  const p = CATEGORIES[cat].products[idx];
-  $("stampSub").innerHTML = `<strong>${p.name}</strong> · ${slots > 0 ? `${slots} slot promo tinggal` : "Slot promo habis!"}`;
-  if(!reduceMotion){
-    const colours = ["#FF4F64","#FF8A4C","#FFC94D","#22C27E","#4CC3E3","#7C6CFF"];
-    $("confetti").innerHTML = Array.from({length:44}, () => {
-      const angle = Math.random()*Math.PI*2, dist = 160 + Math.random()*260;
-      return `<i style="--c:${colours[Math.floor(Math.random()*colours.length)]};--x:${Math.round(Math.cos(angle)*dist)}px;--y:${Math.round(Math.sin(angle)*dist*0.8 + 60)}px;--r:${Math.round(Math.random()*720-360)}deg;--d:${(Math.random()*0.15).toFixed(2)}s"></i>`;
-    }).join("");
-  }
-  replay($("stamp"), "show");
-}
-function resetTimer(){ endAt = Date.now() + SETTINGS.promoMinutes*60000; saveState(); }
-setInterval(()=>{
-  const left=Math.max(0,endAt-Date.now()), m=Math.floor(left/60000), s=Math.floor(left%60000/1000);
-  $("timer").textContent = `${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
-  $("timerBtn").classList.toggle("urgent", left > 0 && left < 60000);
-},250);
 
 document.addEventListener("keydown",e=>{
   const k=e.key.toLowerCase();
@@ -650,9 +533,6 @@ document.addEventListener("keydown",e=>{
   else if(/^[1-9]$/.test(k) && +k<=CATEGORIES.length) setCat(+k-1);
   else if(k==="p") setPlan(plan+1);
   else if(k==="c") setColor(colorIdx+1);
-  else if(k==="s") stampSold();
-  else if(k==="r") editSlots();
-  else if(k==="t") resetTimer();
   else if(k==="f"){ if(canFs) toggleFs(); }
   else if(k==="d") toggleTheme();
   else if(k==="h") $("help").classList.toggle("open");
@@ -661,9 +541,6 @@ document.addEventListener("keydown",e=>{
   if(k.startsWith("arrow")) e.preventDefault();
 });
 $("prev").onclick=()=>setProduct(idx-1);
-$("soldBtn").onclick=stampSold;
-$("slotBox").onclick=editSlots;
-$("timerBtn").onclick=resetTimer;
 $("themeBtn").onclick=toggleTheme;
 if(canFs) $("fsBtn").onclick=toggleFs; else $("fsBtn").hidden=true;
 /* Leret kiri/kanan atas produk untuk tukar */
@@ -682,7 +559,7 @@ $("agentRole").textContent = SETTINGS.agentRole;
 $("cta").innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1.2 12H6.2z" fill="#1E6BFF" stroke="#1E6BFF"/><path d="M9 10V6a3 3 0 0 1 6 0v4" stroke="#06222D"/></svg><span>${SETTINGS.cta}</span>`;
 const items = SETTINGS.ticker.map(t=>`<span>${t}</span>`).join("");
 $("track").innerHTML = items + items;
-window.addEventListener("DOMContentLoaded", ()=>{ loadState(); if(!endAt) resetTimer(); renderSlots(); render(1); });
+window.addEventListener("DOMContentLoaded", ()=>{ render(1); });
 </script>
 
 </body>
