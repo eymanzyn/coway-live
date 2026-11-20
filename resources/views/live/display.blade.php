@@ -119,6 +119,7 @@ button{font:inherit;color:inherit;cursor:pointer}
   letter-spacing:-.02em;margin:6px 0 18px}
 .price{display:flex;align-items:flex-end;gap:10px;line-height:.85}
 .price .rm{font-family:var(--display);font-weight:700;font-size:clamp(1.6rem,2.4vw,2.4rem);padding-bottom:.35em}
+.price .num .sen,.plan .amt .sen{font-size:.5em;letter-spacing:0;font-weight:inherit;color:inherit;display:inline;margin-left:0}
 .price .num{font-family:var(--display);font-weight:800;font-size:clamp(4.5rem,8.5vw,8rem);letter-spacing:-.05em;color:var(--ink);font-variant-numeric:tabular-nums}
 .price .per{font-size:1.1rem;color:var(--muted);padding-bottom:.5em}
 .per b{color:var(--ink);font-weight:700}
@@ -404,7 +405,10 @@ const ART = {
 const $ = id => document.getElementById(id);
 let cat = 0, idx = 0, plan = 0, colorIdx = 0;
 const pick = p => p.plans[Math.min(plan, p.plans.length-1)];
-const rm = n => "RM" + n.toLocaleString("en-MY");
+const money = n => n.toLocaleString("en-MY", { minimumFractionDigits: Number.isInteger(n) ? 0 : 2, maximumFractionDigits: 2 });
+const rm = n => "RM" + money(n);
+/* Sen dipapar lebih kecil supaya harga besar tak terlalu lebar */
+const priceHtml = n => Number.isInteger(n) ? String(n) : `${Math.floor(n)}<small class="sen">.${n.toFixed(2).split(".")[1]}</small>`;
 const imgSrc = p => p.img || "";
 
 const KIND_ICON = { water:"💧", air:"🌬️", mattress:"🛏️", massage:"💆", aircond:"❄️", bidet:"🚽", shower:"🚿" };
@@ -420,11 +424,11 @@ let shownPrice = null, priceRaf = 0;
 function animatePrice(to){
   const el = $("pRent"), from = shownPrice ?? to; shownPrice = to;
   cancelAnimationFrame(priceRaf);
-  if(from === to || reduceMotion){ el.textContent = to; return; }
+  if(from === to || reduceMotion){ el.innerHTML = priceHtml(to); return; }
   const start = performance.now(), dur = 450;
   const step = now => {
     const k = Math.min(1, (now-start)/dur), ease = 1 - Math.pow(1-k, 3);
-    el.textContent = Math.round(from + (to-from)*ease);
+    if(k < 1) el.textContent = Math.round(from + (to-from)*ease); else el.innerHTML = priceHtml(to);
     if(k < 1) priceRaf = requestAnimationFrame(step);
   };
   priceRaf = requestAnimationFrame(step);
@@ -494,7 +498,7 @@ function renderSpot(anim = 0){
   const bestIdx = p.plans.every(x=>x.bulanan===cheapest) ? -1 : p.plans.findIndex(x=>x.bulanan===cheapest);
   $("plans").innerHTML = p.plans.map((x,i)=>`<button class="plan" role="radio" data-i="${i}" aria-checked="${x===pl}">
     ${i===bestIdx ? `<em class="best">PALING JIMAT</em>` : ""}<span class="pl">${x.label}</span>
-    <b class="amt">${rm(x.bulanan)}<small>/bln</small></b><span class="nt">${x.nota}</span></button>`).join("");
+    <b class="amt">RM${priceHtml(x.bulanan)}<small>/bln</small></b><span class="nt">${x.nota}</span></button>`).join("");
   $("plans").querySelectorAll(".plan").forEach(b=>b.onclick=()=>setPlan(+b.dataset.i));
   $("pFeats").innerHTML = (p.feats||[]).map(f=>`<li>${f}</li>`).join("");
   $("pPromo").textContent = p.promo;
