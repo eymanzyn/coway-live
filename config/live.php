@@ -31,8 +31,8 @@ $pelan = fn (float $tujuhKosong, float $limaKosong, float $tigaDua): array => [
 return [
 
     'settings' => [
-        'agentName' => 'Aina Coway Care',
-        'agentRole' => 'Ejen Sah Coway, Shah Alam',
+        'agentName' => 'Coway Care',
+        'agentRole' => 'Ejen Sah Coway, Hulu Langat',
         'cta' => 'Klik beg biru untuk tempah',
         'ticker' => [
             'Pemasangan PERCUMA seluruh Semenanjung',

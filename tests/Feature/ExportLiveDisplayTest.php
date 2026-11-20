@@ -23,7 +23,7 @@ class ExportLiveDisplayTest extends TestCase
         $outputPath = base_path($this->outputFolder);
         $html = file_get_contents($outputPath.'/index.html');
 
-        $this->assertStringContainsString('Aina Coway Care', $html);
+        $this->assertStringContainsString('Coway Care', $html);
         $this->assertStringContainsString('"img":"images\/neo-plus.png"', $html);
         $this->assertStringNotContainsString(json_encode(asset('images/neo-plus.png')), $html);
         $this->assertFileExists($outputPath.'/images/neo-plus.png');
